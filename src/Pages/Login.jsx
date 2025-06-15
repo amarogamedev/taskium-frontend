@@ -1,7 +1,15 @@
-import {Button, Card, Field, Flex, Image, Input, Stack, Text, Link, Box} from "@chakra-ui/react";
-import { useLogin } from "../hooks/useLogin";
+import {Box, Button, Card, Field, Image, Input, Link, Stack, Text} from "@chakra-ui/react";
+import {useLogin} from "../hooks/useLogin";
+import {useEffect} from "react";
 
 function Login() {
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.href = '/';
+        }
+    }, []);
+
     const {
         email,
         setEmail,
@@ -28,7 +36,7 @@ function Login() {
                     <Card.Description>
                         {isCadastro
                             ? 'Preencha os dados para criar sua conta'
-                            : 'Entre com seu e-mail e senha para realizar um pedido ou cadastrar um restaurante'
+                            : 'Entre com seu e-mail e senha para acessar o sistema'
                         }
                     </Card.Description>
                 </Card.Header>
@@ -84,7 +92,7 @@ function Login() {
                                 <Link onClick={toggleCadastro}>
                                     {isCadastro ? 'Já possui conta? Faça login' : 'Não tem conta? Cadastre-se'}
                                 </Link>
-                                <Button variant="solid" type="submit" isLoading={carregando}>
+                                <Button variant="solid" bg="accent" type="submit" isLoading={carregando}>
                                     {isCadastro ? 'Cadastrar' : 'Entrar'}
                                 </Button>
                             </Stack>

@@ -1,5 +1,6 @@
 import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
+import api from './api';
 
 export function useLogin() {
     const [email, setEmail] = useState('');
@@ -20,17 +21,16 @@ export function useLogin() {
         e.preventDefault();
         setCarregando(true);
         setErro('');
-        const response = await fetch('http://localhost:8080/auth/login', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email: email, senha: senha})
-        });
-        if (!response.ok) {
-            setErro('Usuário ou senha inválidos');
-        }
-        else {
-            const token = await response.text();
+        try {
+            const response = await api.post('/auth/login', {
+                email: email,
+                senha: senha
+            });
+            const token = response.data;
             handleAuthSuccess(token);
+        } catch (error) {
+            console.log(error);
+            setErro('Usuário ou senha inválidos');
         }
         setCarregando(false);
     };
@@ -43,21 +43,17 @@ export function useLogin() {
         }
         setCarregando(true);
         setErro('');
-        const response = await fetch('http://localhost:8080/auth/registrar', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
+        try {
+            const response = await api.post('/auth/registrar', {
                 nome: nome,
                 email: email,
                 senha: senha
-            })
-        });
-        if (!response.ok) {
-            setErro('Erro ao cadastrar usuário');
-        }
-        else {
-            const token = await response.text();
+            });
+            const token = response.data;
             handleAuthSuccess(token);
+        } catch (error) {
+            console.log(error);
+            setErro('Erro ao cadastrar usuário');
         }
         setCarregando(false);
     };
