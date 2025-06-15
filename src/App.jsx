@@ -14,7 +14,6 @@ function App() {
         };
         checkToken();
         window.addEventListener('storage', checkToken);
-        // Observa mudanças no token em tempo real
         const interval = setInterval(checkToken, 500);
         return () => {
             window.removeEventListener('storage', checkToken);
@@ -42,3 +41,4 @@ function App() {
 }
 
 export default App;
+

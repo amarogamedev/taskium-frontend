@@ -2,14 +2,14 @@ import {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import api from './api';
 
-export function useLogin() {
+export function useAuth() {
     const [email, setEmail] = useState('');
-    const [senha, setSenha] = useState('');
-    const [nome, setNome] = useState('');
-    const [confirmarSenha, setConfirmarSenha] = useState('');
-    const [erro, setErro] = useState('');
-    const [carregando, setCarregando] = useState(false);
-    const [isCadastro, setIsCadastro] = useState(false);
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [isSignUp, setIsSignUp] = useState(false);
     const navigate = useNavigate();
 
     const handleAuthSuccess = (token) => {
@@ -19,68 +19,68 @@ export function useLogin() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setCarregando(true);
-        setErro('');
+        setLoading(true);
+        setError('');
         try {
             const response = await api.post('/auth/login', {
                 email: email,
-                senha: senha
+                senha: password
             });
             const token = response.data;
             handleAuthSuccess(token);
         } catch (error) {
             console.log(error);
-            setErro('Usuário ou senha inválidos');
+            setError('Invalid email or password');
         }
-        setCarregando(false);
+        setLoading(false);
     };
 
-    const handleCadastro = async (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
-        if (senha !== confirmarSenha) {
-            setErro('As senhas não coincidem');
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
             return;
         }
-        setCarregando(true);
-        setErro('');
+        setLoading(true);
+        setError('');
         try {
-            const response = await api.post('/auth/registrar', {
-                nome: nome,
+            const response = await api.post('/auth/register', {
+                nome: name,
                 email: email,
-                senha: senha
+                senha: password
             });
             const token = response.data;
             handleAuthSuccess(token);
         } catch (error) {
             console.log(error);
-            setErro('Erro ao cadastrar usuário');
+            setError('Error signing up');
         }
-        setCarregando(false);
+        setLoading(false);
     };
 
-    const toggleCadastro = () => {
-        setIsCadastro(!isCadastro);
-        setErro('');
+    const toggleSignUp = () => {
+        setIsSignUp(!isSignUp);
+        setError('');
         setEmail('');
-        setSenha('');
-        setNome('');
-        setConfirmarSenha('');
+        setPassword('');
+        setName('');
+        setConfirmPassword('');
     };
 
     return {
         email,
         setEmail,
-        senha,
-        setSenha,
-        nome,
-        setNome,
-        confirmarSenha,
-        setConfirmarSenha,
-        erro,
-        carregando,
-        isCadastro,
+        password,
+        setPassword,
+        name,
+        setName,
+        confirmPassword,
+        setConfirmPassword,
+        error,
+        loading,
+        isSignUp,
         handleLogin,
-        handleCadastro,
-        toggleCadastro
+        handleSignUp,
+        toggleSignUp
     };
 }
