@@ -1,6 +1,6 @@
 import {Box, Button, Flex, IconButton, Image, Stack} from "@chakra-ui/react";
 import {useNavigate, useLocation} from "react-router-dom";
-import {ClipboardText, GearSix, House, Question, SignOut} from "phosphor-react";
+import {ClipboardText, GearSix, House, Question, SignOut, User} from "phosphor-react";
 import api from "../hooks/api";
 
 function Sidebar() {
@@ -20,9 +20,21 @@ function Sidebar() {
     };
 
     return (
-        <Box w="280px" bg="white" h="100vh" display="flex" flexDirection="column" justifyContent="space-between">
+        <Box
+            w="280px"
+            bg="white"
+            height="100vh"
+            position="fixed"
+            top={0}
+            left={0}
+            display="flex"
+            flexDirection="column"
+            justifyContent="space-between"
+            borderRight="1px solid #e4e4e7"
+            overflowY="auto"
+        >
             <Box>
-                <Image src="logo.png" p={6} pl={4}/>
+                <Image src="/logo.png" p={6} pl={4}/>
                 <Stack>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/")}>
                         <House
@@ -48,21 +60,13 @@ function Sidebar() {
                         />
                         Settings
                     </Button>
-                    <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/about")}>
-                        <Question
-                            size={24}
-                            color={"#FF5700"}
-                            weight={location.pathname === "/about" ? "fill" : "regular"}
-                        />
-                        About
-                    </Button>
                 </Stack>
             </Box>
-            <Box p={3} borderTop="1px solid #eee">
+            <Box p={3} borderTop="1px solid #e4e4e7">
                 <Flex align="center" justifyContent="space-between">
                     <Flex align="center">
-                        <Image src="/user-fill.png" boxSize="36px" borderRadius="full" mr={2}/>
-                        <Box fontWeight="bold">{userInfo?.name}</Box>
+                        <User size={32} color={"#0000FF"}/>
+                        <Box fontWeight="bold" ml={4}>{userInfo?.name}</Box>
                     </Flex>
                     <IconButton variant="outline" color={"accent2"} onClick={handleLogout}>
                         <SignOut size={20}/>

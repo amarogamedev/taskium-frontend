@@ -5,7 +5,7 @@ import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Backlog from "./pages/Backlog.jsx";
 import Settings from "./pages/Settings.jsx";
-import About from "./pages/About.jsx";
+import Board from "./pages/Board.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -35,7 +35,7 @@ function App() {
                         <Route path="/" element={<Home/>}/>
                         <Route path="/backlog" element={<Backlog/>}/>
                         <Route path="/settings" element={<Settings/>}/>
-                        <Route path="/about" element={<About/>}/>
+                        <Route path="/board/:boardId" element={<Board/>}/>
                         <Route path="*" element={<NotFound/>}/>
                     </>
                 ) : (
@@ -47,4 +47,3 @@ function App() {
 }
 
 export default App;
-
