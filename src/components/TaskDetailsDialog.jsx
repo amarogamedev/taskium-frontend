@@ -64,52 +64,52 @@ const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, 
     if (type === "select" && options) {
         const collection = createListCollection({items: options});
         return (<Field.Root>
-                <Field.Label>
-                    <Flex gap={2} alignItems="center">
-                        {icon && <Box>{icon}</Box>}
-                        <Text fontWeight="bold" color="gray.600">{label}</Text>
-                    </Flex>
-                </Field.Label>
-                <Select.Root
-                    collection={collection}
-                    required={required}
-                    defaultValue={[value]}
-                    onValueChange={e => onChange(e.value[0])}
-                >
-                    <Select.Control>
-                        <Select.Trigger>
-                            <Select.ValueText/>
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                            <Select.Indicator/>
-                        </Select.IndicatorGroup>
-                    </Select.Control>
-                    <Select.Positioner>
-                        <Select.Content>
-                            {collection.items.map((item) => (<Select.Item item={item} key={item.value}>
-                                    {item.label}
-                                    <Select.ItemIndicator/>
-                                </Select.Item>))}
-                        </Select.Content>
-                    </Select.Positioner>
-                </Select.Root>
-            </Field.Root>);
-    }
-
-    return (<Field.Root>
             <Field.Label>
                 <Flex gap={2} alignItems="center">
                     {icon && <Box>{icon}</Box>}
                     <Text fontWeight="bold" color="gray.600">{label}</Text>
                 </Flex>
             </Field.Label>
-            <Input
-                type={type}
-                value={value || ''}
-                onChange={e => onChange(e.target.value)}
+            <Select.Root
+                collection={collection}
                 required={required}
-            />
+                defaultValue={[value]}
+                onValueChange={e => onChange(e.value[0])}
+            >
+                <Select.Control>
+                    <Select.Trigger>
+                        <Select.ValueText/>
+                    </Select.Trigger>
+                    <Select.IndicatorGroup>
+                        <Select.Indicator/>
+                    </Select.IndicatorGroup>
+                </Select.Control>
+                <Select.Positioner>
+                    <Select.Content>
+                        {collection.items.map((item) => (<Select.Item item={item} key={item.value}>
+                            {item.label}
+                            <Select.ItemIndicator/>
+                        </Select.Item>))}
+                    </Select.Content>
+                </Select.Positioner>
+            </Select.Root>
         </Field.Root>);
+    }
+
+    return (<Field.Root>
+        <Field.Label>
+            <Flex gap={2} alignItems="center">
+                {icon && <Box>{icon}</Box>}
+                <Text fontWeight="bold" color="gray.600">{label}</Text>
+            </Flex>
+        </Field.Label>
+        <Input
+            type={type}
+            value={value || ''}
+            onChange={e => onChange(e.target.value)}
+            required={required}
+        />
+    </Field.Root>);
 };
 
 export default function TaskDetailsDialog({task: initialTask, boardKey, onSuccess}) {
@@ -206,8 +206,8 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
 
                     <Dialog.Body>
                         {loading ? (<Flex justify="center" py={8}>
-                                <Spinner size="lg"/>
-                            </Flex>) : error ? (<Text color="accent4">{error}</Text>) : editingTask && (
+                            <Spinner size="lg"/>
+                        </Flex>) : error ? (<Text color="accent4">{error}</Text>) : editingTask && (
                             <form id="edit-task-form" onSubmit={handleSubmit}>
                                 <Grid templateColumns="2fr 1fr" gap={8}>
                                     {/* Coluna da Esquerda */}
@@ -271,36 +271,35 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                                                     onChange={value => handleChange('assignedUserName', value)}
                                                     icon={<User size={16}/>}
                                                 />
+
+                                                <Box mt={2}>
+                                                    <EditableInfoRow
+                                                        label="Due Date"
+                                                        value={editingTask.dueDate?.split('T')[0]}
+                                                        onChange={value => handleChange('dueDate', value)}
+                                                        icon={<Calendar size={16}/>}
+                                                        type="date"
+                                                    />
+                                                </Box>
+                                                <Box mt={2}>
+                                                    <EditableInfoRow
+                                                        label="Completed Date"
+                                                        value={editingTask.completedDate?.split('T')[0]}
+                                                        onChange={value => handleChange('completedDate', value)}
+                                                        icon={<Calendar size={16}/>}
+                                                        type="date"
+                                                    />
+                                                </Box>
                                                 <InfoRow
                                                     label="Created by"
                                                     value={editingTask.createdByUserName}
                                                     icon={<User size={16}/>}
                                                 />
-                                                <Box borderTop="1px solid" borderColor="gray.200" pt={4}>
-                                                    <InfoRow
-                                                        label="Creation Date"
-                                                        value={formatDate(editingTask.creationDate)}
-                                                        icon={<Calendar size={16}/>}
-                                                    />
-                                                    <Box mt={2}>
-                                                        <EditableInfoRow
-                                                            label="Due Date"
-                                                            value={editingTask.dueDate?.split('T')[0]}
-                                                            onChange={value => handleChange('dueDate', value)}
-                                                            icon={<Calendar size={16}/>}
-                                                            type="date"
-                                                        />
-                                                    </Box>
-                                                    <Box mt={2}>
-                                                        <EditableInfoRow
-                                                            label="Completed Date"
-                                                            value={editingTask.completedDate?.split('T')[0]}
-                                                            onChange={value => handleChange('completedDate', value)}
-                                                            icon={<Calendar size={16}/>}
-                                                            type="date"
-                                                        />
-                                                    </Box>
-                                                </Box>
+                                                <InfoRow
+                                                    label="Creation Date"
+                                                    value={formatDate(editingTask.creationDate)}
+                                                    icon={<Calendar size={16}/>}
+                                                />
                                                 {editingTask.parentTaskId && (
                                                     <Box borderTop="1px solid" borderColor="gray.200" pt={4}>
                                                         <EditableInfoRow

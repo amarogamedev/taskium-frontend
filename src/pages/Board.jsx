@@ -1,7 +1,16 @@
 import {Box, Center, Flex, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
-import {SquareHalf} from "phosphor-react";
+import {
+    CalendarCheck,
+    Checks,
+    Clipboard,
+    HourglassLow,
+    ListBullets,
+    PersonSimpleRun,
+    ShieldCheck,
+    SquareHalf, Trash
+} from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
 import CreateTaskDialog from "../components/CreateTaskDialog.jsx";
 import TaskDetailsDialog from "../components/TaskDetailsDialog.jsx";
@@ -28,6 +37,18 @@ export function Board() {
     const getTasksByStatus = (status) => {
         return tasks.filter(task => task.status === status);
     };
+
+    const getIconByStatus = (status) => {
+        switch (status) {
+            case 'TO_DO': return <Clipboard size={32}/>
+            case 'IN_PROGRESS': return <PersonSimpleRun size={32}/>
+            case 'WAITING': return <HourglassLow size={32}/>
+            case 'REVIEW': return <Checks size={32}/>
+            case 'DONE': return <CalendarCheck size={32}/>
+            case 'CANCELLED': return <Trash size={32}/>
+            default: return <ListBullets size={32}/>
+        }
+    }
 
     return (
         <Flex minH="100vh" bg="gray.100">
@@ -56,12 +77,15 @@ export function Board() {
                         <SimpleGrid columns={6} spacing={4} flex={1} overflowX="auto">
                             {STATUS.map((column) => (
                                 <Box key={column.id} border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" px={2} mr={2}>
-                                    <Box p={2} mb={2}>
-                                        <Text fontWeight="bold">{column.label}</Text>
-                                        <Text fontSize="sm" color="gray.600">
-                                            {getTasksByStatus(column.id).length} tasks
-                                        </Text>
-                                    </Box>
+                                    <Flex alignItems="center" gap={2} px={2}>
+                                        {getIconByStatus(column.id)}
+                                        <Box p={2} my={2}>
+                                            <Text fontWeight="bold">{column.label}</Text>
+                                            <Text fontSize="sm" color="gray.600">
+                                                {getTasksByStatus(column.id).length} tasks
+                                            </Text>
+                                        </Box>
+                                    </Flex>
 
                                     <Flex direction="column" gap={2}>
                                         {getTasksByStatus(column.id).map((task) => (
