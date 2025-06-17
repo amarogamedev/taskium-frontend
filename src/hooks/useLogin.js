@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import api from './api';
 
 export function useAuth() {
-    const [email, setEmail] = useState('');
+    const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -12,64 +12,75 @@ export function useAuth() {
     const [isSignUp, setIsSignUp] = useState(false);
     const navigate = useNavigate();
 
-    const handleAuthSuccess = (token) => {
-        localStorage.setItem('token', token);
-        navigate('/');
-    };
-
     const handleLogin = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
+        manageStates(e);
         try {
             const response = await api.post('/auth/login', {
-                email: email,
-                senha: password
+                login: login,
+                password: password
             });
-            const token = response.data;
-            handleAuthSuccess(token);
+            handleAuthSuccess(response.data);
         } catch (error) {
             console.log(error);
-            setError('Invalid email or password');
+            setError(getResponseError(error, 'Erro desconhecido ao fazer login'));
         }
         setLoading(false);
     };
 
     const handleSignUp = async (e) => {
-        e.preventDefault();
+        manageStates(e);
         if (password !== confirmPassword) {
             setError('Passwords do not match');
+            setLoading(false);
             return;
         }
-        setLoading(true);
-        setError('');
         try {
             const response = await api.post('/auth/register', {
-                nome: name,
-                email: email,
-                senha: password
+                name: name,
+                login: login,
+                password: password
             });
-            const token = response.data;
-            handleAuthSuccess(token);
+            handleAuthSuccess(response.data);
         } catch (error) {
             console.log(error);
-            setError('Error signing up');
+            setError(getResponseError(error, 'Erro ao registrar'));
         }
         setLoading(false);
     };
 
+    const handleAuthSuccess = (userInfo) => {
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
+        navigate('/');
+    };
+
+    function manageStates(e) {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
+    }
+
+    function getResponseError(error, fallbackMsg) {
+        if (error.response && error.response.data && error.response.data) {
+            return error.response.data;
+        } else if (error.message) {
+            return error.message;
+        } else {
+            return fallbackMsg;
+        }
+    }
+
     const toggleSignUp = () => {
         setIsSignUp(!isSignUp);
         setError('');
-        setEmail('');
+        setLogin('');
         setPassword('');
         setName('');
         setConfirmPassword('');
     };
 
     return {
-        email,
-        setEmail,
+        email: login,
+        setEmail: setLogin,
         password,
         setPassword,
         name,

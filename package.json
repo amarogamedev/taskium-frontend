@@ -16,6 +16,7 @@
     "@emotion/styled": "^11.14.0",
     "axios": "^1.10.0",
     "framer-motion": "^12.18.1",
+    "phosphor-react": "^1.4.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^7.6.2"

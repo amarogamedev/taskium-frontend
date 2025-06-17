@@ -1,12 +1,17 @@
-import {Box, Button, Card, Field, Image, Input, Link, Stack, Text} from "@chakra-ui/react";
+import {Box, Button, Card, Field, Flex, Image, Input, Link, Stack, Text} from "@chakra-ui/react";
 import {useAuth} from "../hooks/useLogin";
 import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
+
     useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            window.location.href = '/';
+        const userInfo = localStorage.getItem('userInfo');
+        if (userInfo) {
+            navigate('/');
+        } else {
+            navigate('/login');
         }
     }, []);
 
@@ -28,8 +33,8 @@ function Login() {
     } = useAuth();
 
     return (
-        <Box align="center" justify="center" pt={16}>
-            <Card.Root maxW="sm" mx="auto">
+        <Flex minH="100vh" bg="gray.100">
+            <Card.Root maxW="md" maxH={"700px"} mx="auto" mt={16}>
                 <Card.Header>
                     <Image src="logo.png" mb={6}/>
                     <Card.Title>{isSignUp ? 'Sign Up' : 'Login'}</Card.Title>
@@ -87,7 +92,7 @@ function Login() {
                                     />
                                 </Field.Root>
                             )}
-                            {error && <Text color="red.500" marginBottom="3">{error}</Text>}
+                            {error && <Text color="red.500" marginBottom="3">{typeof error === 'string' ? error : error?.message}</Text>}
                             <Stack direction="row" justify="space-between" align="center" gap="2">
                                 <Link onClick={toggleSignUp}>
                                     {isSignUp ? 'Already have an account? Log in' : 'Don\'t have an account? Sign up'}
@@ -100,7 +105,7 @@ function Login() {
                     </form>
                 </Card.Body>
             </Card.Root>
-        </Box>
+        </Flex>
     );
 }
 

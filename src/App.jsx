@@ -1,15 +1,18 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import NotFound from "./Pages/NotFound";
+import Home from "./pages/Home.jsx";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
+import Backlog from "./pages/Backlog.jsx";
+import Settings from "./pages/Settings.jsx";
+import About from "./pages/About.jsx";
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     useEffect(() => {
         const checkToken = () => {
-            const token = localStorage.getItem('token');
+            const token = localStorage.getItem('userInfo');
             setIsAuthenticated(!!token);
         };
         checkToken();
@@ -30,6 +33,9 @@ function App() {
                     <>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/" element={<Home/>}/>
+                        <Route path="/backlog" element={<Backlog/>}/>
+                        <Route path="/settings" element={<Settings/>}/>
+                        <Route path="/about" element={<About/>}/>
                         <Route path="*" element={<NotFound/>}/>
                     </>
                 ) : (
