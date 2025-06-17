@@ -1,26 +1,20 @@
-import {
-    Box,
-    Button,
-    Card,
-    Center,
-    CloseButton,
-    Dialog,
-    Field,
-    Flex, Grid,
-    Portal,
-    Spinner,
-    Stack,
-    Text
-} from "@chakra-ui/react";
-import {Input} from "@chakra-ui/react/input";
+import {Box, Button, Card, Center, Flex, Grid, HStack, IconButton, Spinner, Stack, Text} from "@chakra-ui/react";
 import {useHome} from "../hooks/useHome";
 import Sidebar from "../components/Sidebar";
-import {FloppyDisk, GithubLogo, LinkedinLogo, Plus, SquareHalf, XCircle} from "phosphor-react";
+import {Door, GithubLogo, LinkedinLogo, SquareHalf, Trash} from "phosphor-react";
 import {useNavigate} from "react-router-dom";
+import CreateBoardDialog from "../components/CreateBoardDialog.jsx";
 
-function Home() {
-    const {boards, loading, key, setKey, name, setName, saving, error, handleSave} = useHome();
+
+export function Home() {
+    const {boards, loading, fetchBoards} = useHome();
     const navigate = useNavigate();
+
+    if (loading) {
+        return (
+            <Center h="200px"><Spinner size="lg"/></Center>
+        );
+    }
 
     return (
         <Flex minH="100vh" bg="gray.100">
@@ -30,58 +24,7 @@ function Home() {
                     <Text fontSize="2xl" h={16}>
                         My boards
                     </Text>
-                    <Dialog.Root closeOnInteractOutside={true}>
-                        <Dialog.Trigger asChild>
-                            <Button bg={"accent"}>
-                                <Plus size={16}/>
-                                Create new board
-                            </Button>
-                        </Dialog.Trigger>
-                        <Portal>
-                            <Dialog.Backdrop/>
-                            <Dialog.Positioner>
-                                <Dialog.Content>
-                                    <Dialog.Header>
-                                        <SquareHalf size={28} color={"#FF5700"}/>
-                                        <Dialog.Title>New board settings</Dialog.Title>
-                                    </Dialog.Header>
-                                    <Dialog.Body>
-                                        <form id="create-board-form"
-                                              style={{display: 'flex', flexDirection: 'column', gap: 16}}
-                                              onSubmit={(e) => handleSave(e)}>
-                                            <Field.Root>
-                                                <Field.Label>Key</Field.Label>
-                                                <Input maxLength={3} placeholder="Ex: DEV" required value={key}
-                                                       onChange={e => setKey(e.target.value.toUpperCase())}/>
-                                            </Field.Root>
-                                            <Field.Root>
-                                                <Field.Label>Name</Field.Label>
-                                                <Input placeholder="Board name" required value={name}
-                                                       onChange={e => setName(e.target.value)}/>
-                                            </Field.Root>
-                                            {error && <Text color="red.500">{error}</Text>}
-                                        </form>
-                                    </Dialog.Body>
-                                    <Dialog.Footer>
-                                        <Dialog.ActionTrigger asChild>
-                                            <Button variant="outline" type="button">
-                                                <XCircle/>
-                                                Cancel
-                                            </Button>
-                                        </Dialog.ActionTrigger>
-                                        <Button type="submit" bg={"accent"} form="create-board-form" isLoading={saving}
-                                                disabled={!key || !name}>
-                                            <FloppyDisk/>
-                                            Save
-                                        </Button>
-                                    </Dialog.Footer>
-                                    <Dialog.CloseTrigger asChild>
-                                        <CloseButton size="sm"/>
-                                    </Dialog.CloseTrigger>
-                                </Dialog.Content>
-                            </Dialog.Positioner>
-                        </Portal>
-                    </Dialog.Root>
+                    <CreateBoardDialog onSuccess={fetchBoards} />
                 </Flex>
                 {loading ? (
                     <Center h="200px"><Spinner size="lg"/></Center>
@@ -93,8 +36,7 @@ function Home() {
                             <Box border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" p={2}>
                                 <Grid gridTemplateColumns="repeat(2, 1fr)" gap={2}>
                                     {boards?.map(board => (
-                                        <Card.Root key={board.id} cursor="pointer"
-                                                   onClick={() => navigate(`/board/${board.id}`)}>
+                                        <Card.Root key={board.id} cursor="pointer" onClick={() => navigate(`/board/${board.id}`)}>
                                             <Card.Header>
                                                 <Flex gap={2}>
                                                     <SquareHalf size={24} color={"#FF5700"}/>

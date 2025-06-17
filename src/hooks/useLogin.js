@@ -79,8 +79,8 @@ export function useAuth() {
     };
 
     return {
-        email: login,
-        setEmail: setLogin,
+        login,
+        setLogin,
         password,
         setPassword,
         name,

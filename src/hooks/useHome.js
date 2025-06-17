@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import api from "../hooks/api";
+import api from "./api";
 
 export function useHome() {
     const [boards, setBoards] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [key, setKey] = useState("");
-    const [name, setName] = useState("");
-    const [saving, setSaving] = useState(false);
-    const [error, setError] = useState("");
 
     useEffect(() => {
         fetchBoards();
@@ -20,32 +16,9 @@ export function useHome() {
             .finally(() => setLoading(false));
     };
 
-    const handleSave = async (e) => {
-        e?.preventDefault();
-        setSaving(true);
-        setError("");
-        try {
-            await api.post("/board", { key, name });
-            await fetchBoards();
-            setKey("");
-            setName("");
-        } catch (err) {
-            console.error("Error creating board:", err);
-            setError("Error creating board");
-        } finally {
-            setSaving(false);
-        }
-    };
-
     return {
         boards,
         loading,
-        key,
-        setKey,
-        name,
-        setName,
-        saving,
-        error,
-        handleSave
+        fetchBoards
     };
 }

@@ -16,8 +16,8 @@ function Login() {
     }, []);
 
     const {
-        email,
-        setEmail,
+        login,
+        setLogin,
         password,
         setPassword,
         name,
@@ -61,12 +61,12 @@ function Login() {
                                 </Field.Root>
                             )}
                             <Field.Root>
-                                <Field.Label>Email</Field.Label>
+                                <Field.Label>Username</Field.Label>
                                 <Input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={email}
-                                    onChange={e => setEmail(e.target.value)}
+                                    type="text"
+                                    placeholder="Username"
+                                    value={login}
+                                    onChange={e => setLogin(e.target.value)}
                                     required
                                 />
                             </Field.Root>
@@ -92,7 +92,7 @@ function Login() {
                                     />
                                 </Field.Root>
                             )}
-                            {error && <Text color="red.500" marginBottom="3">{typeof error === 'string' ? error : error?.message}</Text>}
+                            {error && <Text color="accent4" marginBottom="3">{typeof error === 'string' ? error : error?.message}</Text>}
                             <Stack direction="row" justify="space-between" align="center" gap="2">
                                 <Link onClick={toggleSignUp}>
                                     {isSignUp ? 'Already have an account? Log in' : 'Don\'t have an account? Sign up'}
@@ -110,4 +110,3 @@ function Login() {
 }
 
 export default Login;
-
