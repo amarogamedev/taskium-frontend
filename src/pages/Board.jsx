@@ -69,6 +69,7 @@ export function Board() {
                                                 key={task.id}
                                                 task={task}
                                                 boardKey={board?.key}
+                                                onSuccess={fetchBoardData}
                                             />
                                         ))}
                                     </Flex>
