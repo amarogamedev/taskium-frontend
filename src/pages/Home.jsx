@@ -6,7 +6,7 @@ import {
     CloseButton,
     Dialog,
     Field,
-    Flex,
+    Flex, Grid,
     Portal,
     Spinner,
     Stack,
@@ -27,7 +27,7 @@ function Home() {
             <Sidebar/>
             <Box flex={1} p={6} pl="306px">
                 <Flex justifyContent="space-between" mb={8} h={8}>
-                    <Text fontSize="2xl" fontWeight="bold" mt={2}>
+                    <Text fontSize="2xl" h={16}>
                         My boards
                     </Text>
                     <Dialog.Root closeOnInteractOutside={true}>
@@ -69,7 +69,8 @@ function Home() {
                                                 Cancel
                                             </Button>
                                         </Dialog.ActionTrigger>
-                                        <Button type="submit" bg={"accent"} form="create-board-form" isLoading={saving} disabled={!key || !name}>
+                                        <Button type="submit" bg={"accent"} form="create-board-form" isLoading={saving}
+                                                disabled={!key || !name}>
                                             <FloppyDisk/>
                                             Save
                                         </Button>
@@ -89,30 +90,31 @@ function Home() {
                         {boards.length === 0 ? (
                             <Text>No boards were found.</Text>
                         ) : (
-                            <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={6}>
-                                {boards?.map(board => (
-                                    <Card.Root key={board.id} cursor="pointer" onClick={() => navigate(`/board/${board.id}`)}>
-                                        <Card.Header>
-                                            <Flex gap={2}>
-                                                <SquareHalf size={24} color={"#FF5700"}/>
-                                                <Text color="accent2">{board.key}</Text>
-                                                <Text
-                                                    fontWeight="bold"
-                                                    whiteSpace="nowrap"
-                                                    overflow="hidden"
-                                                >
-                                                    {board.name}
-                                                </Text>
-                                            </Flex>
-                                        </Card.Header>
-                                        <Card.Body>
-                                            <Box textAlign="right">
-                                                <Text fontSize="sm" color="gray.600">Tasks</Text>
-                                                <Text fontSize="2xl" fontWeight="bold">{board.taskCount}</Text>
-                                            </Box>
-                                        </Card.Body>
-                                    </Card.Root>
-                                ))}
+                            <Box border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" p={2}>
+                                <Grid gridTemplateColumns="repeat(2, 1fr)" gap={2}>
+                                    {boards?.map(board => (
+                                        <Card.Root key={board.id} cursor="pointer"
+                                                   onClick={() => navigate(`/board/${board.id}`)}>
+                                            <Card.Header>
+                                                <Flex gap={2}>
+                                                    <SquareHalf size={24} color={"#FF5700"}/>
+                                                    <Text fontWeight="bold" color="accent2">
+                                                        {board.key}
+                                                    </Text>
+                                                    <Text whiteSpace="nowrap" overflow="hidden">
+                                                        {board.name}
+                                                    </Text>
+                                                </Flex>
+                                            </Card.Header>
+                                            <Card.Body>
+                                                <Box textAlign="right">
+                                                    <Text fontSize="sm" color="gray.600">Tasks</Text>
+                                                    <Text fontSize="2xl">{board.taskCount}</Text>
+                                                </Box>
+                                            </Card.Body>
+                                        </Card.Root>
+                                    ))}
+                                </Grid>
                             </Box>
                         )}
                     </Box>
@@ -125,7 +127,8 @@ function Home() {
                     </Text>
                 </Flex>
                 <Text mb={4}>
-                    Taskium is a simple project management tool inspired by Jira, but with a focus on simplicity and less bloat,
+                    Taskium is a simple project management tool inspired by Jira, but with a focus on simplicity and
+                    less bloat,
                     created by Luis Fellipe Amaro to learn more about web development.
                 </Text>
                 <Text mb={4}>
@@ -144,7 +147,8 @@ function Home() {
                 <Text mb={4}>
                     While building this project, I learned a lot of new things, such as JWT authentication,
                     deploying a Java application on Firebase, and using Docker to containerize it.
-                    I also had the opportunity to practice technologies I’m already familiar with, such as Spring Boot, React, and MySQL.
+                    I also had the opportunity to practice technologies I’m already familiar with, such as Spring Boot,
+                    React, and MySQL.
                 </Text>
 
                 <Stack direction="row" spacing={4}>

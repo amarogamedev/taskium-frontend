@@ -1,7 +1,7 @@
 import {Box, Button, Card, Center, Flex, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
-import {Calendar, CaretDoubleUp, CaretDown, CaretUp, Plus, User, Warning} from "phosphor-react";
+import {Calendar, CaretDoubleUp, CaretDown, CaretUp, Plus, SquareHalf, User, Warning} from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
 
 const COLUMNS = [
@@ -63,12 +63,13 @@ export function Board() {
             <Box flex={1} pl="280px">
                 <Box p={6}>
                     <Flex direction="column" h="100vh">
-                        <Box mb={6}>
+                        <Box mb={4}>
                             <Flex justifyContent="space-between" mb={8} h={8}>
-                                <Box>
-                                    <Flex alignItems="center" gap={3} mb={2}>
-                                        <Text color="accent2" fontSize="lg">{board?.key}</Text>
-                                        <Text fontSize="2xl" fontWeight="bold">
+                                <Box h={16}>
+                                    <Flex alignItems="center" gap={3} mb={1}>
+                                        <SquareHalf size={24} color={"#FF5700"}/>
+                                        <Text color="accent2" fontSize="2xl" fontWeight="black">{board?.key}</Text>
+                                        <Text fontSize="2xl">
                                             {board?.name}
                                         </Text>
                                     </Flex>
@@ -85,7 +86,7 @@ export function Board() {
 
                         <SimpleGrid columns={6} spacing={4} flex={1} overflowX="auto">
                             {COLUMNS.map((column) => (
-                                <Box key={column.id} borderRight={"1px solid #e4e4e7"} px={2}>
+                                <Box key={column.id} border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" px={2} mr={2}>
                                     <Box p={2} mb={2}>
                                         <Text fontWeight="bold">{column.label}</Text>
                                         <Text fontSize="sm" color="gray.500">
@@ -103,12 +104,12 @@ export function Board() {
                                                             {board?.key}-{task.id}
                                                         </Text>
                                                     </Flex>
-                                                    <Text fontWeight="medium" mb={2}>
+                                                    <Text mb={2}>
                                                         {task.title}
                                                     </Text>
-                                                    <Text fontSize="sm" color="gray.600" noOfLines={2} mb={3}>
-                                                        {task.description}
-                                                    </Text>
+                                                    {task.parentTaskId && <Text fontSize="sm" color="gray.600" noOfLines={2} mb={3}>
+                                                        Parent task: {task.parentTaskId}
+                                                    </Text>}
                                                     <Flex justifyContent="space-between" align="center">
                                                         <Flex align="center" gap={1}>
                                                             <User size={16} color={"#0000FF"}/>
@@ -140,3 +141,5 @@ export function Board() {
 }
 
 export default Board;
+
+
