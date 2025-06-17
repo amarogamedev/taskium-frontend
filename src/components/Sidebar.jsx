@@ -1,10 +1,23 @@
 import {Box, Button, Flex, IconButton, Image, Stack} from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import {ClipboardText, GearSix, House, Question, SignOut} from "phosphor-react";
+import api from "../hooks/api";
 
 function Sidebar() {
     const navigate = useNavigate();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    const handleLogout = async () => {
+        try {
+            await api.post("/auth/logout");
+            localStorage.removeItem('userInfo');
+            localStorage.removeItem('token');
+            navigate('/login');
+        } catch (error) {
+            console.error("Erro ao fazer logout:", error);
+        }
+    };
+
     return (
         <Box w="280px" bg="white" h="100vh" display="flex" flexDirection="column" justifyContent="space-between">
             <Box>
@@ -34,7 +47,7 @@ function Sidebar() {
                         <Image src="/user-fill.png" boxSize="36px" borderRadius="full" mr={2}/>
                         <Box fontWeight="bold">{userInfo?.name}</Box>
                     </Flex>
-                    <IconButton variant="outline" colorScheme="red" onClick={() => {}}>
+                    <IconButton variant="outline" colorScheme="red" onClick={handleLogout}>
                         <SignOut size={20}/>
                     </IconButton>
                 </Flex>
