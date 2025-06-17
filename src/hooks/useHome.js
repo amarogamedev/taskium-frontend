@@ -20,7 +20,7 @@ export function useHome() {
             .finally(() => setLoading(false));
     };
 
-    const handleSave = async (e, onSuccess) => {
+    const handleSave = async (e) => {
         e?.preventDefault();
         setSaving(true);
         setError("");
@@ -29,9 +29,9 @@ export function useHome() {
             await fetchBoards();
             setKey("");
             setName("");
-            onSuccess?.();
         } catch (err) {
-            setError("Erro ao criar board");
+            console.error("Error creating board:", err);
+            setError("Error creating board");
         } finally {
             setSaving(false);
         }

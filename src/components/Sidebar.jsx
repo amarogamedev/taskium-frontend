@@ -1,10 +1,11 @@
 import {Box, Button, Flex, IconButton, Image, Stack} from "@chakra-ui/react";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useLocation} from "react-router-dom";
 import {ClipboardText, GearSix, House, Question, SignOut} from "phosphor-react";
 import api from "../hooks/api";
 
 function Sidebar() {
     const navigate = useNavigate();
+    const location = useLocation();
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     const handleLogout = async () => {
@@ -24,19 +25,35 @@ function Sidebar() {
                 <Image src="logo.png" p={6} pl={4}/>
                 <Stack>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/")}>
-                        <House size={16}/>
+                        <House
+                            size={24}
+                            color={"#FF5700"}
+                            weight={location.pathname === "/" ? "fill" : "regular"}
+                        />
                         Home page
                     </Button>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/backlog")}>
-                        <ClipboardText size={16}/>
+                        <ClipboardText
+                            size={24}
+                            color={"#FF5700"}
+                            weight={location.pathname === "/backlog" ? "fill" : "regular"}
+                        />
                         Backlog
                     </Button>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/settings")}>
-                        <GearSix size={16}/>
+                        <GearSix
+                            size={24}
+                            color={"#FF5700"}
+                            weight={location.pathname === "/settings" ? "fill" : "regular"}
+                        />
                         Settings
                     </Button>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/about")}>
-                        <Question size={16}/>
+                        <Question
+                            size={24}
+                            color={"#FF5700"}
+                            weight={location.pathname === "/about" ? "fill" : "regular"}
+                        />
                         About
                     </Button>
                 </Stack>
@@ -47,7 +64,7 @@ function Sidebar() {
                         <Image src="/user-fill.png" boxSize="36px" borderRadius="full" mr={2}/>
                         <Box fontWeight="bold">{userInfo?.name}</Box>
                     </Flex>
-                    <IconButton variant="outline" colorScheme="red" onClick={handleLogout}>
+                    <IconButton variant="outline" color={"accent2"} onClick={handleLogout}>
                         <SignOut size={20}/>
                     </IconButton>
                 </Flex>

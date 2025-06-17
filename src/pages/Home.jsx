@@ -1,14 +1,11 @@
-import {Box, Button, Card, Center, Flex, Spinner, Text, Dialog, Portal, CloseButton} from "@chakra-ui/react";
+import {Box, Button, Card, Center, Flex, Spinner, Text, Dialog, Portal, Field, CloseButton} from "@chakra-ui/react";
 import {Input} from "@chakra-ui/react/input";
 import {useHome} from "../hooks/useHome";
 import Sidebar from "../components/Sidebar";
-import {Plus} from "phosphor-react";
-import {Field} from "@chakra-ui/react";
-import {useState} from "react";
+import {Disc, FloppyDisk, Plus, SquareHalf, XCircle} from "phosphor-react";
 
 function Home() {
     const {boards, loading, key, setKey, name, setName, saving, error, handleSave} = useHome();
-    const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
         <Flex minH="100vh" bg="gray.100">
@@ -18,7 +15,7 @@ function Home() {
                     <Text fontSize="lg" fontWeight="bold" mt={2}>
                         My boards
                     </Text>
-                    <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
+                    <Dialog.Root closeOnInteractOutside={true}>
                         <Dialog.Trigger asChild>
                             <Button bg={"accent"}>
                                 <Plus size={16}/>
@@ -30,12 +27,13 @@ function Home() {
                             <Dialog.Positioner>
                                 <Dialog.Content>
                                     <Dialog.Header>
+                                        <SquareHalf size={28} color={"#FF5700"}/>
                                         <Dialog.Title>New board settings</Dialog.Title>
                                     </Dialog.Header>
                                     <Dialog.Body>
                                         <form id="create-board-form"
                                               style={{display: 'flex', flexDirection: 'column', gap: 16}}
-                                              onSubmit={(e) => handleSave(e, () => setDialogOpen(false))}>
+                                              onSubmit={(e) => handleSave(e)}>
                                             <Field.Root>
                                                 <Field.Label>Key</Field.Label>
                                                 <Input maxLength={3} placeholder="Ex: DEV" required value={key}
@@ -51,11 +49,15 @@ function Home() {
                                     </Dialog.Body>
                                     <Dialog.Footer>
                                         <Dialog.ActionTrigger asChild>
-                                            <Button variant="outline" type="button"
-                                                    onClick={() => setDialogOpen(false)}>Cancel</Button>
+                                            <Button variant="outline" type="button">
+                                                <XCircle/>
+                                                Cancel
+                                            </Button>
                                         </Dialog.ActionTrigger>
-                                        <Button type="submit" form="create-board-form" isLoading={saving}
-                                                disabled={!key || !name}>Save</Button>
+                                        <Button type="submit" bg={"accent"} form="create-board-form" isLoading={saving} disabled={!key || !name}>
+                                            <FloppyDisk/>
+                                            Save
+                                        </Button>
                                     </Dialog.Footer>
                                     <Dialog.CloseTrigger asChild>
                                         <CloseButton size="sm"/>
@@ -77,7 +79,8 @@ function Home() {
                                     <Card.Root key={board.id} cursor="pointer">
                                         <Card.Header pb={0}>
                                             <Flex gap={2}>
-                                                <Text color="accent">{board.key}</Text>
+                                                <SquareHalf size={24} color={"#FF5700"}/>
+                                                <Text color="accent2">{board.key}</Text>
                                                 <Text fontWeight="bold">{board.name}</Text>
                                             </Flex>
                                         </Card.Header>

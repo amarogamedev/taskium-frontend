@@ -35,12 +35,12 @@ function About() {
                 </Text>
 
                 <Stack direction="row" spacing={4}>
-                    <Button href="https://www.linkedin.com/in/luisfellipeamaro/" target="_blank" variant="outline">
-                        <LinkedinLogo size={16}/>
+                    <Button href="https://www.linkedin.com/in/luisfellipeamaro/" target="_blank" bg={"accent2"}>
+                        <LinkedinLogo size={16} weight={"bold"}/>
                         My LinkedIn
                     </Button>
-                    <Button href="https://github.com/amarogamedev" target="_blank" variant="outline">
-                        <GithubLogo size={16}/>
+                    <Button href="https://github.com/amarogamedev" target="_blank" bg={"accent2"}>
+                        <GithubLogo size={16} weight={"bold"}/>
                         My GitHub
                     </Button>
                 </Stack>

@@ -8,7 +8,7 @@ const config = defineConfig({
         tokens: {
             colors: {
                 accent: '#0000FF',
-                dark1: '#121212'
+                accent2: '#FF5700'
             }, fonts: {
                 body: "'Rubik', sans-serif", heading: "'Rubik', sans-serif"
             }
