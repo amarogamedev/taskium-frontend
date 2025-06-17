@@ -11,15 +11,15 @@ import {
     createListCollection
 } from "@chakra-ui/react";
 import {FloppyDisk, Intersect, Plus, XCircle} from "phosphor-react";
-import {useCreateTask} from "../hooks/useCreateTask.js";
 import { STATUS } from "../enums/TaskStatus.js";
 import {PRIORITY} from "../enums/TaskPriority.js";
+import {useTask} from "../hooks/useTask.js";
 
 export default function CreateTaskDialog({ onSuccess, board }) {
-    const { newTask, setNewTask, saving, error, handleSave } = useCreateTask(() => {onSuccess?.();}, board);
+    const { task, setTask, saving, error, handleCreate } = useTask( {},() => {onSuccess?.();}, board);
 
     const handleChange = (field, value) => {
-        setNewTask(prev => ({
+        setTask(prev => ({
             ...prev,
             [field]: value
         }));
@@ -45,7 +45,7 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                             <Dialog.Title>New task on {board.name}</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
-                            <form id="create-task-form" style={{display: 'flex', flexDirection: 'column', gap: 16}} onSubmit={handleSave}>
+                            <form id="create-task-form" style={{display: 'flex', flexDirection: 'column', gap: 16}} onSubmit={handleCreate}>
                                 <Field.Root>
                                     <Field.Label>
                                         Title
@@ -54,7 +54,7 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                                     <Input
                                         placeholder="Write a short title"
                                         required
-                                        value={newTask.title}
+                                        value={task.title}
                                         onChange={e => handleChange('title', e.target.value)}
                                     />
                                 </Field.Root>
@@ -66,7 +66,7 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                                     <Textarea
                                         placeholder="Describe the task in detail"
                                         required
-                                        value={newTask.description}
+                                        value={task.description}
                                         onChange={e => handleChange('description', e.target.value)}
                                         minHeight="150px"
                                         resize="vertical"
@@ -130,11 +130,11 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                                     </Field.Label>
                                     <Input
                                         type="date"
-                                        value={newTask.dueDate}
+                                        value={task.dueDate}
                                         onChange={e => handleChange('dueDate', e.target.value)}
                                     />
                                 </Field.Root>
-                                {error && <Text color="accent4">{error}</Text>}
+                                {error && <Text color="red.500">{error}</Text>}
                             </form>
                         </Dialog.Body>
                         <Dialog.Footer>
@@ -150,7 +150,7 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                                     bg={"accent"}
                                     form="create-task-form"
                                     isLoading={saving}
-                                    disabled={!newTask.title || !newTask.description || !newTask.status || !newTask.priority}
+                                    disabled={!task.title || !task.description || !task.status || !task.priority}
                                 >
                                     <FloppyDisk/>
                                     Save

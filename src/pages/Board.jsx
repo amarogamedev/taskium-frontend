@@ -8,8 +8,8 @@ import {
     HourglassLow,
     ListBullets,
     PersonSimpleRun,
-    ShieldCheck,
-    SquareHalf, Trash
+    SquareHalf,
+    Trash
 } from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
 import CreateTaskDialog from "../components/CreateTaskDialog.jsx";
