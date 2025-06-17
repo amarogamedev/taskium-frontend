@@ -7,15 +7,15 @@ import {Field} from "@chakra-ui/react";
 import {useState} from "react";
 
 function Home() {
-    const { boards, loading, key, setKey, name, setName, saving, error, handleSave } = useHome();
+    const {boards, loading, key, setKey, name, setName, saving, error, handleSave} = useHome();
     const [dialogOpen, setDialogOpen] = useState(false);
 
     return (
         <Flex minH="100vh" bg="gray.100">
-            <Sidebar />
+            <Sidebar/>
             <Box flex={1} p={6}>
-                <Flex justifyContent="space-between" alignItems="baseline" mb={6}>
-                    <Text fontSize="lg" fontWeight="bold">
+                <Flex justifyContent="space-between" mb={8} h={8}>
+                    <Text fontSize="lg" fontWeight="bold" mt={2}>
                         My boards
                     </Text>
                     <Dialog.Root open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -26,33 +26,39 @@ function Home() {
                             </Button>
                         </Dialog.Trigger>
                         <Portal>
-                            <Dialog.Backdrop />
+                            <Dialog.Backdrop/>
                             <Dialog.Positioner>
                                 <Dialog.Content>
                                     <Dialog.Header>
                                         <Dialog.Title>New board settings</Dialog.Title>
                                     </Dialog.Header>
                                     <Dialog.Body>
-                                        <form id="create-board-form" style={{ display: 'flex', flexDirection: 'column', gap: 16 }} onSubmit={(e) => handleSave(e, () => setDialogOpen(false))}>
+                                        <form id="create-board-form"
+                                              style={{display: 'flex', flexDirection: 'column', gap: 16}}
+                                              onSubmit={(e) => handleSave(e, () => setDialogOpen(false))}>
                                             <Field.Root>
                                                 <Field.Label>Key</Field.Label>
-                                                <Input maxLength={3} placeholder="Ex: DEV" required value={key} onChange={e => setKey(e.target.value.toUpperCase())} />
+                                                <Input maxLength={3} placeholder="Ex: DEV" required value={key}
+                                                       onChange={e => setKey(e.target.value.toUpperCase())}/>
                                             </Field.Root>
                                             <Field.Root>
                                                 <Field.Label>Name</Field.Label>
-                                                <Input placeholder="Board name" required value={name} onChange={e => setName(e.target.value)} />
+                                                <Input placeholder="Board name" required value={name}
+                                                       onChange={e => setName(e.target.value)}/>
                                             </Field.Root>
                                             {error && <Text color="red.500">{error}</Text>}
                                         </form>
                                     </Dialog.Body>
                                     <Dialog.Footer>
                                         <Dialog.ActionTrigger asChild>
-                                            <Button variant="outline" type="button" onClick={() => setDialogOpen(false)}>Cancel</Button>
+                                            <Button variant="outline" type="button"
+                                                    onClick={() => setDialogOpen(false)}>Cancel</Button>
                                         </Dialog.ActionTrigger>
-                                        <Button type="submit" form="create-board-form" isLoading={saving} disabled={!key || !name}>Save</Button>
+                                        <Button type="submit" form="create-board-form" isLoading={saving}
+                                                disabled={!key || !name}>Save</Button>
                                     </Dialog.Footer>
                                     <Dialog.CloseTrigger asChild>
-                                        <CloseButton size="sm" />
+                                        <CloseButton size="sm"/>
                                     </Dialog.CloseTrigger>
                                 </Dialog.Content>
                             </Dialog.Positioner>
@@ -60,7 +66,7 @@ function Home() {
                     </Dialog.Root>
                 </Flex>
                 {loading ? (
-                    <Center h="200px"><Spinner size="lg" /></Center>
+                    <Center h="200px"><Spinner size="lg"/></Center>
                 ) : (
                     <Box>
                         {boards.length === 0 ? (
