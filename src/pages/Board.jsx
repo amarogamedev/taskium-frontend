@@ -99,7 +99,7 @@ export function Board() {
                                             <TaskDetailsDialog
                                                 key={task.id}
                                                 task={task}
-                                                boardKey={board?.key}
+                                                board={board}
                                                 onSuccess={fetchBoardData}
                                             />
                                         ))}

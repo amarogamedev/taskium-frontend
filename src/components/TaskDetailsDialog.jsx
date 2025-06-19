@@ -58,7 +58,7 @@ const InfoRow = ({label, value, icon}) => (<Flex gap={2} alignItems="center">
     <Text>{value || '-'}</Text>
 </Flex>);
 
-const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, required}) => {
+const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, required, members, board}) => {
     if (type === "select" && options) {
         const collection = createListCollection({items: options});
         return (<Field.Root>
@@ -94,6 +94,60 @@ const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, 
         </Field.Root>);
     }
 
+    if (type === "members" && members) {
+        const collection = createListCollection({
+            items: [
+                { value: '', label: 'Unassigned' },
+                // Owner sempre aparece primeiro na lista
+                {
+                    value: board.owner.id,
+                    label: `${board.owner.name} (Owner)`
+                },
+                ...members
+                    .filter(member => member.id !== board.owner.id) // Remove o owner se ele já estiver na lista de membros
+                    .map(member => ({
+                        value: member.id,
+                        label: member.name
+                    }))
+            ]
+        });
+        return (
+            <Field.Root>
+                <Field.Label>
+                    <Flex gap={2} alignItems="center">
+                        {icon && <Box>{icon}</Box>}
+                        <Text fontWeight="bold" color="gray.600">{label}</Text>
+                    </Flex>
+                </Field.Label>
+                <Select.Root
+                    collection={collection}
+                    required={required}
+                    defaultValue={[value]}
+                    onValueChange={e => onChange(e.value[0])}
+                >
+                    <Select.Control>
+                        <Select.Trigger>
+                            <Select.ValueText/>
+                        </Select.Trigger>
+                        <Select.IndicatorGroup>
+                            <Select.Indicator/>
+                        </Select.IndicatorGroup>
+                    </Select.Control>
+                    <Select.Positioner>
+                        <Select.Content>
+                            {collection.items.map((item) => (
+                                <Select.Item item={item} key={item.value}>
+                                    {item.label}
+                                    <Select.ItemIndicator/>
+                                </Select.Item>
+                            ))}
+                        </Select.Content>
+                    </Select.Positioner>
+                </Select.Root>
+            </Field.Root>
+        );
+    }
+
     return (<Field.Root>
         <Field.Label>
             <Flex gap={2} alignItems="center">
@@ -110,7 +164,7 @@ const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, 
     </Field.Root>);
 };
 
-export default function TaskDetailsDialog({task: initialTask, boardKey, onSuccess}) {
+export default function TaskDetailsDialog({task: initialTask, board, onSuccess}) {
     const {task, saving, error, handleChange, handleSave} = useTask(initialTask, () => {
         onSuccess?.();
     });
@@ -132,7 +186,7 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                         <Flex gap={2} mb={2} align="center">
                             {getPriorityIcon(initialTask.priority)}
                             <Text color={getPriorityColor(initialTask.priority)} fontSize="sm">
-                                {boardKey}-{initialTask.id}
+                                {board?.key}-{initialTask.id}
                             </Text>
                         </Flex>
                         <Text mb={2}>
@@ -167,7 +221,7 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                             <Flex gap={3} align="center">
                                 <Intersect size={24} color={"#0000FF"}/>
                                 <Text fontSize="2xl">
-                                    {boardKey}-{initialTask.id}
+                                    {board?.key}-{initialTask.id}
                                 </Text>
                             </Flex>
                             <Dialog.CloseTrigger asChild>
@@ -238,9 +292,16 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                                                     />
                                                     <EditableInfoRow
                                                         label="Assigned to"
-                                                        value={task.assignedUserName}
-                                                        onChange={value => handleChange('assignedUserName', value)}
+                                                        value={task.assignedUserId}
+                                                        onChange={value => {
+                                                            handleChange('assignedUserId', value ? Number(value) : null);
+                                                            const member = value ? [...board.members, board.owner].find(m => m.id === Number(value)) : null;
+                                                            handleChange('assignedUserName', member?.name || '');
+                                                        }}
                                                         icon={<User size={16}/>}
+                                                        type="members"
+                                                        members={board.members}
+                                                        board={board}
                                                     />
 
                                                     <Box mt={2}>
@@ -303,5 +364,3 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
         </Dialog.Root>
     );
 }
-
-
