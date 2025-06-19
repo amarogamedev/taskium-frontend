@@ -44,6 +44,21 @@ export function useTask(initialTask, onSuccess, board) {
         }
     };
 
+    const handleDelete = async () => {
+        setSaving(true);
+        setError("");
+        try {
+            await api.delete("/task/" + task.id);
+            onSuccess?.();
+        } catch (err) {
+            console.error("Error deleting task:", err);
+            setError(err.response?.data?.message || "Error deleting task");
+            throw err;
+        } finally {
+            setSaving(false);
+        }
+    };
+
     return {
         task,
         setTask,
@@ -51,6 +66,7 @@ export function useTask(initialTask, onSuccess, board) {
         error,
         handleCreate,
         handleChange,
-        handleSave
+        handleSave,
+        handleDelete
     };
 }

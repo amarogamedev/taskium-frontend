@@ -1,24 +1,11 @@
 import {
-    Box,
-    Button,
-    Card,
-    CloseButton,
-    Dialog,
-    Field,
-    Flex,
-    Grid,
-    GridItem,
-    Input,
-    Portal,
-    Spinner,
-    Text,
-    Textarea
+    Box, Button, Card, CloseButton, Dialog, Field, Flex, Grid, GridItem, Input, Portal, Spinner, Text, Textarea
 } from "@chakra-ui/react";
-import {Calendar, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, User, Warning} from "phosphor-react";
+import {Calendar, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, Trash, User, Warning} from "phosphor-react";
 import {STATUS} from "../enums/TaskStatus";
 import {PRIORITY} from "../enums/TaskPriority";
 import {useTask} from "../hooks/useTask.js";
-import { EditableInfoRow } from "./EditableInfoRow";
+import {EditableInfoRow} from "./EditableInfoRow";
 
 const getPriorityColor = (priority) => {
     switch (priority?.toUpperCase()) {
@@ -58,7 +45,7 @@ const InfoRow = ({label, value, icon}) => (<Flex gap={2} alignItems="center">
 </Flex>);
 
 export default function TaskDetailsDialog({task: initialTask, board, onSuccess}) {
-    const {task, saving, error, handleChange, handleSave} = useTask(initialTask, () => {
+    const {task, saving, error, handleChange, handleSave, handleDelete} = useTask(initialTask, () => {
         onSuccess?.();
     });
 
@@ -67,8 +54,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
         await handleSave();
     };
 
-    return (
-        <Dialog.Root closeOnInteractOutside>
+    return (<Dialog.Root closeOnInteractOutside>
             <Dialog.Trigger asChild>
                 <Card.Root
                     cursor="pointer"
@@ -238,6 +224,46 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                             {error && (<Text color="accent4" mt={4}>{error}</Text>)}
                         </Dialog.Body>
                         <Dialog.Footer>
+                            <Dialog.Root role="alertdialog" closeOnInteractOutside>
+                                <Dialog.Trigger asChild>
+                                    <Button
+                                        variant="outline"
+                                        form="edit-task-form"
+                                        color="accent4"
+                                    >
+                                        <Trash/>
+                                        Delete task
+                                    </Button>
+                                </Dialog.Trigger>
+                                    <Dialog.Backdrop/>
+                                    <Dialog.Positioner>
+                                        <Dialog.Content>
+                                            <Dialog.Header>
+                                                <Dialog.Title>Are you sure?</Dialog.Title>
+                                            </Dialog.Header>
+                                            <Dialog.Body>
+                                                <p>
+                                                    This action cannot be undone. This will permanently delete this task.
+                                                </p>
+                                            </Dialog.Body>
+                                            <Dialog.Footer>
+                                                <Dialog.ActionTrigger asChild>
+                                                    <Button variant="outline">Cancel</Button>
+                                                </Dialog.ActionTrigger>
+                                                <Button form="edit-task-form"
+                                                        bg="accent4"
+                                                        isLoading={saving}
+                                                        onClick={() => handleDelete()}
+                                                >
+                                                    Delete
+                                                </Button>
+                                            </Dialog.Footer>
+                                            <Dialog.CloseTrigger asChild>
+                                                <CloseButton size="sm"/>
+                                            </Dialog.CloseTrigger>
+                                        </Dialog.Content>
+                                    </Dialog.Positioner>
+                            </Dialog.Root>
                             <Button
                                 type="submit"
                                 form="edit-task-form"
@@ -251,6 +277,5 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                     </Dialog.Content>
                 </Dialog.Positioner>
             </Portal>
-        </Dialog.Root>
-    );
+        </Dialog.Root>);
 }
