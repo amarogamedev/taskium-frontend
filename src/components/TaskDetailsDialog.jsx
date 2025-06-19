@@ -1,7 +1,18 @@
 import {
     Box, Button, Card, CloseButton, Dialog, Field, Flex, Grid, GridItem, Input, Portal, Spinner, Text, Textarea
 } from "@chakra-ui/react";
-import {Calendar, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, Trash, User, Warning} from "phosphor-react";
+import {
+    Calendar,
+    CalendarCheck,
+    CaretDoubleUp,
+    CaretDown,
+    CaretUp,
+    FloppyDisk,
+    Intersect,
+    Trash,
+    User,
+    Warning
+} from "phosphor-react";
 import {STATUS} from "../enums/TaskStatus";
 import {PRIORITY} from "../enums/TaskPriority";
 import {useTask} from "../hooks/useTask.js";
@@ -184,15 +195,6 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                             type="date"
                                                         />
                                                     </Box>
-                                                    <Box mt={2}>
-                                                        <EditableInfoRow
-                                                            label="Completed Date"
-                                                            value={task.completedDate?.split('T')[0]}
-                                                            onChange={value => handleChange('completedDate', value)}
-                                                            icon={<Calendar size={16}/>}
-                                                            type="date"
-                                                        />
-                                                    </Box>
                                                     <InfoRow
                                                         label="Created by"
                                                         value={task.createdByUserName}
@@ -202,6 +204,11 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                         label="Creation Date"
                                                         value={formatDate(task.creationDate)}
                                                         icon={<Calendar size={16}/>}
+                                                    />
+                                                    <InfoRow
+                                                        label="Completed Date"
+                                                        value={formatDate(task.completedDate)}
+                                                        icon={<CalendarCheck size={16}/>}
                                                     />
                                                     {task.parentTaskId && (
                                                         <Box borderTop="1px solid" borderColor="gray.200" pt={4}>
