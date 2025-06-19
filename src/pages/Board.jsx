@@ -20,6 +20,7 @@ import {STATUS} from "../enums/TaskStatus.js";
 export function Board() {
     const {boardId} = useParams();
     const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId);
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     if (loading) {
         return (
@@ -72,7 +73,9 @@ export function Board() {
                                     </Text>
                                 </Box>
                                 <HStack spacing={2}>
-                                    <ManageBoardMembersDialog boardId={boardId} members={board?.members} onSuccess={fetchBoardData}/>
+                                    {board.owner.id === userInfo.id &&
+                                        <ManageBoardMembersDialog boardId={boardId} members={board?.members} onSuccess={fetchBoardData}/>
+                                    }
                                     <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
                                 </HStack>
                             </Flex>
