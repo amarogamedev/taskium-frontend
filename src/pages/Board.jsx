@@ -47,7 +47,6 @@ export function Board() {
             case 'WAITING': return <HourglassLow size={32}/>
             case 'REVIEW': return <Checks size={32}/>
             case 'DONE': return <CalendarCheck size={32}/>
-            case 'CANCELLED': return <Trash size={32}/>
             default: return <ListBullets size={32}/>
         }
     }
@@ -81,7 +80,7 @@ export function Board() {
                             </Flex>
                         </Box>
 
-                        <SimpleGrid columns={6} spacing={4} flex={1} overflowX="auto">
+                        <SimpleGrid columns={STATUS.length} spacing={4} flex={1} overflowX="auto">
                             {STATUS.map((column) => (
                                 <Box key={column.id} border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" px={2} mr={2}>
                                     <Flex alignItems="center" gap={2} px={2}>

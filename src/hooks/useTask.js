@@ -33,13 +33,7 @@ export function useTask(initialTask, onSuccess, board) {
         setSaving(true);
         setError("");
         try {
-            const taskData = {
-                ...task,
-                boardId: board?.id,
-                dueDate: task.dueDate ? new Date(task.dueDate + 'T23:59:59').toISOString() : null
-            };
-
-            await api.post("/task", taskData);
+            await api.post("/task", task);
             setTask({ title: "", description: "", status: "", priority: "", dueDate: null, parentTaskId: null, boardId: board?.id });
             onSuccess?.();
         } catch (err) {

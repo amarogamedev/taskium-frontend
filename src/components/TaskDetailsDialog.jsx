@@ -3,7 +3,6 @@ import {
     Button,
     Card,
     CloseButton,
-    createListCollection,
     Dialog,
     Field,
     Flex,
@@ -11,7 +10,6 @@ import {
     GridItem,
     Input,
     Portal,
-    Select,
     Spinner,
     Text,
     Textarea
@@ -20,6 +18,7 @@ import {Calendar, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, User
 import {STATUS} from "../enums/TaskStatus";
 import {PRIORITY} from "../enums/TaskPriority";
 import {useTask} from "../hooks/useTask.js";
+import { EditableInfoRow } from "./EditableInfoRow";
 
 const getPriorityColor = (priority) => {
     switch (priority?.toUpperCase()) {
@@ -49,120 +48,14 @@ const getPriorityIcon = (priority) => {
 
 const formatDate = (dateString) => {
     if (!dateString) return '-';
-    return new Date(dateString).toLocaleString();
+    return new Date(dateString).toLocaleDateString();
 };
 
 const InfoRow = ({label, value, icon}) => (<Flex gap={2} alignItems="center">
     {icon && <Box>{icon}</Box>}
-    <Text fontWeight="bold" color="gray.600">{label}:</Text>
+    <Text fontWeight="medium" color="gray.600">{label}:</Text>
     <Text>{value || '-'}</Text>
 </Flex>);
-
-const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, required, members, board}) => {
-    if (type === "select" && options) {
-        const collection = createListCollection({items: options});
-        return (<Field.Root>
-            <Field.Label>
-                <Flex gap={2} alignItems="center">
-                    {icon && <Box>{icon}</Box>}
-                    <Text fontWeight="bold" color="gray.600">{label}</Text>
-                </Flex>
-            </Field.Label>
-            <Select.Root
-                collection={collection}
-                required={required}
-                defaultValue={[value]}
-                onValueChange={e => onChange(e.value[0])}
-            >
-                <Select.Control>
-                    <Select.Trigger>
-                        <Select.ValueText/>
-                    </Select.Trigger>
-                    <Select.IndicatorGroup>
-                        <Select.Indicator/>
-                    </Select.IndicatorGroup>
-                </Select.Control>
-                <Select.Positioner>
-                    <Select.Content>
-                        {collection.items.map((item) => (<Select.Item item={item} key={item.value}>
-                            {item.label}
-                            <Select.ItemIndicator/>
-                        </Select.Item>))}
-                    </Select.Content>
-                </Select.Positioner>
-            </Select.Root>
-        </Field.Root>);
-    }
-
-    if (type === "members" && members) {
-        const collection = createListCollection({
-            items: [
-                { value: '', label: 'Unassigned' },
-                // Owner sempre aparece primeiro na lista
-                {
-                    value: board.owner.id,
-                    label: `${board.owner.name} (Owner)`
-                },
-                ...members
-                    .filter(member => member.id !== board.owner.id) // Remove o owner se ele já estiver na lista de membros
-                    .map(member => ({
-                        value: member.id,
-                        label: member.name
-                    }))
-            ]
-        });
-        return (
-            <Field.Root>
-                <Field.Label>
-                    <Flex gap={2} alignItems="center">
-                        {icon && <Box>{icon}</Box>}
-                        <Text fontWeight="bold" color="gray.600">{label}</Text>
-                    </Flex>
-                </Field.Label>
-                <Select.Root
-                    collection={collection}
-                    required={required}
-                    defaultValue={[value]}
-                    onValueChange={e => onChange(e.value[0])}
-                >
-                    <Select.Control>
-                        <Select.Trigger>
-                            <Select.ValueText/>
-                        </Select.Trigger>
-                        <Select.IndicatorGroup>
-                            <Select.Indicator/>
-                        </Select.IndicatorGroup>
-                    </Select.Control>
-                    <Select.Positioner>
-                        <Select.Content>
-                            {collection.items.map((item) => (
-                                <Select.Item item={item} key={item.value}>
-                                    {item.label}
-                                    <Select.ItemIndicator/>
-                                </Select.Item>
-                            ))}
-                        </Select.Content>
-                    </Select.Positioner>
-                </Select.Root>
-            </Field.Root>
-        );
-    }
-
-    return (<Field.Root>
-        <Field.Label>
-            <Flex gap={2} alignItems="center">
-                {icon && <Box>{icon}</Box>}
-                <Text fontWeight="bold" color="gray.600">{label}</Text>
-            </Flex>
-        </Field.Label>
-        <Input
-            type={type}
-            value={value || ''}
-            onChange={e => onChange(e.target.value)}
-            required={required}
-        />
-    </Field.Root>);
-};
 
 export default function TaskDetailsDialog({task: initialTask, board, onSuccess}) {
     const {task, saving, error, handleChange, handleSave} = useTask(initialTask, () => {
@@ -195,20 +88,18 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                         {initialTask.parentTaskId && <Text fontSize="sm" color="gray.600" noOfLines={2} mb={3}>
                             Parent task: {initialTask.parentTaskId}
                         </Text>}
-                        <Flex justifyContent="space-between" align="center">
-                            <Flex align="center" gap={1}>
-                                <User size={16} color={initialTask.assignedUserId ? "#0000FF" : "#52525b"}/>
-                                <Text fontSize="sm" color="gray.600">
-                                    {initialTask.assignedUserName}
-                                </Text>
-                            </Flex>
-                            {initialTask.dueDate && (<Flex align="center" gap={2}>
-                                <Calendar size={16} color={"#FF5700"}/>
-                                <Text fontSize="sm" color="gray.600">
-                                    {new Date(initialTask.dueDate).toLocaleDateString()}
-                                </Text>
-                            </Flex>)}
-                        </Flex>
+                        {initialTask.assignedUserId && <Flex align="center" gap={2}>
+                            <User size={16} color="#52525b"/>
+                            <Text fontSize="sm" color="gray.600">
+                                {initialTask.assignedUserName}
+                            </Text>
+                        </Flex>}
+                        {initialTask.dueDate && <Flex align="center" gap={2}>
+                            <Calendar size={16} color={"#52525b"}/>
+                            <Text fontSize="sm" color="gray.600">
+                                {formatDate(initialTask.dueDate)}
+                            </Text>
+                        </Flex>}
                     </Card.Body>
                 </Card.Root>
             </Dialog.Trigger>
@@ -248,8 +139,8 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                             </Field.Root>
 
                                             <Box>
-                                                <Text fontWeight="medium" color="gray.700" mb={2}>
-                                                    Descrição
+                                                <Text fontWeight="medium" color="gray.600" mb={2}>
+                                                    Description
                                                 </Text>
                                                 <Textarea
                                                     value={task.description}
@@ -303,7 +194,6 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                         members={board.members}
                                                         board={board}
                                                     />
-
                                                     <Box mt={2}>
                                                         <EditableInfoRow
                                                             label="Due Date"

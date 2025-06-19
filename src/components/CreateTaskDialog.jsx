@@ -1,22 +1,21 @@
 import {
     Button,
     CloseButton,
-    createListCollection,
     Dialog,
     Field,
     Input,
     Portal,
-    Select,
     Text,
     Textarea
 } from "@chakra-ui/react";
-import {FloppyDisk, Intersect, Plus, XCircle} from "phosphor-react";
+import {FloppyDisk, Intersect, Plus, XCircle, User} from "phosphor-react";
 import {STATUS} from "../enums/TaskStatus.js";
 import {PRIORITY} from "../enums/TaskPriority.js";
 import {useTask} from "../hooks/useTask.js";
+import { EditableInfoRow } from "./EditableInfoRow";
 
 export default function CreateTaskDialog({ onSuccess, board }) {
-    const { task, setTask, saving, error, handleCreate } = useTask( {},() => {onSuccess?.();}, board);
+    const { task, setTask, saving, error, handleCreate } = useTask( {boardId: board?.id},() => {onSuccess?.();}, board);
 
     const handleChange = (field, value) => {
         setTask(prev => ({
@@ -24,9 +23,6 @@ export default function CreateTaskDialog({ onSuccess, board }) {
             [field]: value
         }));
     };
-
-    const statusOptions = createListCollection({items: STATUS});
-    const priorityOptions = createListCollection({items: PRIORITY});
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>
@@ -72,68 +68,41 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                                         resize="vertical"
                                     />
                                 </Field.Root>
-                                <Field.Root>
-                                    <Field.Label>
-                                        Status
-                                        <Text as="span" color="accent2"> *</Text>
-                                    </Field.Label>
-                                    <Select.Root collection={statusOptions} required onValueChange={e => handleChange('status', e.value[0])}>
-                                        <Select.Control>
-                                            <Select.Trigger>
-                                                <Select.ValueText placeholder="Select the current task status" />
-                                            </Select.Trigger>
-                                            <Select.IndicatorGroup>
-                                                <Select.Indicator />
-                                            </Select.IndicatorGroup>
-                                        </Select.Control>
-                                            <Select.Positioner>
-                                                <Select.Content>
-                                                    {statusOptions.items.map((s) => (
-                                                        <Select.Item item={s} key={s.value}>
-                                                            {s.label}
-                                                            <Select.ItemIndicator />
-                                                        </Select.Item>
-                                                    ))}
-                                                </Select.Content>
-                                            </Select.Positioner>
-                                    </Select.Root>
-                                </Field.Root>
-                                <Field.Root>
-                                    <Field.Label>
-                                        Priority
-                                        <Text as="span" color="accent2"> *</Text>
-                                    </Field.Label>
-                                    <Select.Root collection={priorityOptions} required onValueChange={e => handleChange('priority', e.value[0])}>
-                                        <Select.Control>
-                                            <Select.Trigger>
-                                                <Select.ValueText placeholder="Define the priority of this task" />
-                                            </Select.Trigger>
-                                            <Select.IndicatorGroup>
-                                                <Select.Indicator />
-                                            </Select.IndicatorGroup>
-                                        </Select.Control>
-                                        <Select.Positioner>
-                                            <Select.Content>
-                                                {priorityOptions.items.map((s) => (
-                                                    <Select.Item item={s} key={s.value}>
-                                                        {s.label}
-                                                        <Select.ItemIndicator />
-                                                    </Select.Item>
-                                                ))}
-                                            </Select.Content>
-                                        </Select.Positioner>
-                                    </Select.Root>
-                                </Field.Root>
-                                <Field.Root>
-                                    <Field.Label>
-                                        Due date
-                                    </Field.Label>
-                                    <Input
-                                        type="date"
-                                        value={task.dueDate}
-                                        onChange={e => handleChange('dueDate', e.target.value)}
-                                    />
-                                </Field.Root>
+                                <EditableInfoRow
+                                    label="Status"
+                                    value={task.status}
+                                    onChange={value => handleChange('status', value)}
+                                    type="select"
+                                    options={STATUS}
+                                    required
+                                />
+                                <EditableInfoRow
+                                    label="Priority"
+                                    value={task.priority}
+                                    onChange={value => handleChange('priority', value)}
+                                    type="select"
+                                    options={PRIORITY}
+                                    required
+                                />
+                                <EditableInfoRow
+                                    label="Assigned to"
+                                    value={task.assignedUserId}
+                                    onChange={value => {
+                                        handleChange('assignedUserId', value ? Number(value) : null);
+                                        const member = value ? [...board.members, board.owner].find(m => m.id === Number(value)) : null;
+                                        handleChange('assignedUserName', member?.name || '');
+                                    }}
+                                    icon={<User size={16}/>}
+                                    type="members"
+                                    members={board.members}
+                                    board={board}
+                                />
+                                <EditableInfoRow
+                                    label="Due date"
+                                    value={task.dueDate}
+                                    onChange={value => handleChange('dueDate', value)}
+                                    type="date"
+                                />
                                 {error && <Text color="red.500">{error}</Text>}
                             </form>
                         </Dialog.Body>
