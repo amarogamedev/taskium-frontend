@@ -16,7 +16,6 @@ import {
     Text,
     Textarea
 } from "@chakra-ui/react";
-import {useState} from "react";
 import {Calendar, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, User, Warning} from "phosphor-react";
 import {STATUS} from "../enums/TaskStatus";
 import {PRIORITY} from "../enums/TaskPriority";
@@ -112,7 +111,7 @@ const EditableInfoRow = ({label, value, onChange, icon, type = "text", options, 
 };
 
 export default function TaskDetailsDialog({task: initialTask, boardKey, onSuccess}) {
-    const {task, loading, error, handleChange, handleSave} = useTask(initialTask, () => {
+    const {task, saving, error, handleChange, handleSave} = useTask(initialTask, () => {
         onSuccess?.();
     });
 
@@ -177,7 +176,7 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                         </Dialog.Header>
 
                         <Dialog.Body>
-                            {loading ? (<Flex justify="center" py={8}>
+                            {saving ? (<Flex justify="center" py={8}>
                                 <Spinner size="lg"/>
                             </Flex>) : error ? (<Text color="accent4">{error}</Text>) : task && (
                                 <form id="edit-task-form" onSubmit={handleSubmit}>
@@ -292,7 +291,7 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
                                 type="submit"
                                 form="edit-task-form"
                                 bg="accent"
-                                isLoading={loading}
+                                isLoading={saving}
                             >
                                 <FloppyDisk/>
                                 Apply Changes
@@ -304,3 +303,5 @@ export default function TaskDetailsDialog({task: initialTask, boardKey, onSucces
         </Dialog.Root>
     );
 }
+
+

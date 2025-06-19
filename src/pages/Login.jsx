@@ -41,7 +41,7 @@ function Login() {
                     <Card.Description>
                         {isSignUp
                             ? 'Fill in the details to create your account'
-                            : 'Enter your email and password to access the system'
+                            : 'Enter your username and password to access the system'
                         }
                     </Card.Description>
                 </Card.Header>

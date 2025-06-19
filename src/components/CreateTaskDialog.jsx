@@ -1,17 +1,17 @@
 import {
     Button,
     CloseButton,
+    createListCollection,
     Dialog,
     Field,
-    Portal,
-    Text,
     Input,
-    Textarea,
+    Portal,
     Select,
-    createListCollection
+    Text,
+    Textarea
 } from "@chakra-ui/react";
 import {FloppyDisk, Intersect, Plus, XCircle} from "phosphor-react";
-import { STATUS } from "../enums/TaskStatus.js";
+import {STATUS} from "../enums/TaskStatus.js";
 import {PRIORITY} from "../enums/TaskPriority.js";
 import {useTask} from "../hooks/useTask.js";
 
