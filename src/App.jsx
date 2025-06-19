@@ -3,7 +3,6 @@ import {useEffect, useState} from 'react';
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import Backlog from "./pages/Backlog.jsx";
 import Settings from "./pages/Settings.jsx";
 import Board from "./pages/Board.jsx";
 
@@ -33,7 +32,6 @@ function App() {
                     <>
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/" element={<Home/>}/>
-                        <Route path="/backlog" element={<Backlog/>}/>
                         <Route path="/settings" element={<Settings/>}/>
                         <Route path="/board/:boardId" element={<Board/>}/>
                         <Route path="*" element={<NotFound/>}/>

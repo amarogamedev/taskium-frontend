@@ -1,9 +1,10 @@
-import {Box, Button, Card, Center, Flex, Grid, HStack, IconButton, Spinner, Stack, Text} from "@chakra-ui/react";
+import {Box, Button, Card, Center, Flex, Grid, Spinner, Stack, Text} from "@chakra-ui/react";
 import {useHome} from "../hooks/useHome";
 import Sidebar from "../components/Sidebar";
-import {Door, GithubLogo, LinkedinLogo, SquareHalf, Trash} from "phosphor-react";
+import {Calendar, GithubLogo, Intersect, LinkedinLogo, SquareHalf, Users} from "phosphor-react";
 import {useNavigate} from "react-router-dom";
 import CreateBoardDialog from "../components/CreateBoardDialog.jsx";
+import InfoRow from "../components/InfoRow.jsx";
 
 
 export function Home() {
@@ -49,10 +50,16 @@ export function Home() {
                                                 </Flex>
                                             </Card.Header>
                                             <Card.Body>
-                                                <Box textAlign="right">
-                                                    <Text fontSize="sm" color="gray.600">Tasks</Text>
-                                                    <Text fontSize="2xl">{board.taskCount}</Text>
-                                                </Box>
+                                                <InfoRow
+                                                    label="Members"
+                                                    value={board.members.length + 1}
+                                                    icon={<Users size={24} color={"#52525b"}/>}
+                                                />
+                                                <InfoRow
+                                                    label="Tasks"
+                                                    value={board.taskCount}
+                                                    icon={<Intersect size={24} color={"#52525b"}/>}
+                                                />
                                             </Card.Body>
                                         </Card.Root>
                                     ))}

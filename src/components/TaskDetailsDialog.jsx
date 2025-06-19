@@ -6,6 +6,7 @@ import {STATUS} from "../enums/TaskStatus";
 import {PRIORITY} from "../enums/TaskPriority";
 import {useTask} from "../hooks/useTask.js";
 import {EditableInfoRow} from "./EditableInfoRow";
+import InfoRow from "./InfoRow.jsx";
 
 const getPriorityColor = (priority) => {
     switch (priority?.toUpperCase()) {
@@ -37,12 +38,6 @@ const formatDate = (dateString) => {
     if (!dateString) return '-';
     return new Date(dateString).toLocaleDateString();
 };
-
-const InfoRow = ({label, value, icon}) => (<Flex gap={2} alignItems="center">
-    {icon && <Box>{icon}</Box>}
-    <Text fontWeight="medium" color="gray.600">{label}:</Text>
-    <Text>{value || '-'}</Text>
-</Flex>);
 
 export default function TaskDetailsDialog({task: initialTask, board, onSuccess}) {
     const {task, saving, error, handleChange, handleSave, handleDelete} = useTask(initialTask, () => {

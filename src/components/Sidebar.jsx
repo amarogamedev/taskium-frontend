@@ -1,6 +1,6 @@
 import {Box, Button, Flex, IconButton, Image, Stack} from "@chakra-ui/react";
-import {useNavigate, useLocation} from "react-router-dom";
-import {ClipboardText, GearSix, House, Question, SignOut, User} from "phosphor-react";
+import {useLocation, useNavigate} from "react-router-dom";
+import {GearSix, House, SignOut, User} from "phosphor-react";
 import api from "../hooks/api";
 
 function Sidebar() {
@@ -43,14 +43,6 @@ function Sidebar() {
                             weight={location.pathname === "/" ? "fill" : "regular"}
                         />
                         Home page
-                    </Button>
-                    <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/backlog")}>
-                        <ClipboardText
-                            size={24}
-                            color={"#FF5700"}
-                            weight={location.pathname === "/backlog" ? "fill" : "regular"}
-                        />
-                        Backlog
                     </Button>
                     <Button variant="ghost" justifyContent="flex-start" onClick={() => navigate("/settings")}>
                         <GearSix
