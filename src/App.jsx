@@ -10,6 +10,7 @@ function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     useEffect(() => {
+        document.title = "Taskium"
         const checkToken = () => {
             const token = localStorage.getItem('userInfo');
             setIsAuthenticated(!!token);
