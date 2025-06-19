@@ -72,16 +72,20 @@ export function Board() {
     const [pendingStatusChange, setPendingStatusChange] = useState(null);
     const {boardId} = useParams();
     const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId);
-    const {task, setTask, handleChange, handleSave } = useTask(null, fetchBoardData);
+    const {task, setTask, handleSave } = useTask(null, fetchBoardData);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
     useEffect(() => {
-        if (task && pendingStatusChange && task.status !== pendingStatusChange.id) {
-            handleChange("status", pendingStatusChange.id);
-            handleSave().catch(error =>
-                console.error("Error updating task status:", error)
-            );
-            setPendingStatusChange(null);
+        if (task) {
+            if(pendingStatusChange && task.status !== pendingStatusChange.id) {
+                const updatedTask = { ...task, status: pendingStatusChange.id };
+                setTask(updatedTask);
+                handleSave(updatedTask).catch(error =>
+                    console.error("Error updating task status:", error)
+                );
+                setPendingStatusChange(null);
+            }
+            setTask(null);
         }
     }, [task]);
 

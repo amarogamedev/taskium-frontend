@@ -13,11 +13,11 @@ export function useTask(initialTask, onSuccess, board) {
         }));
     };
 
-    const handleSave = async () => {
+    const handleSave = async (taskToSave = task) => {
         setSaving(true);
         setError("");
         try {
-            await api.put("/task", task);
+            await api.put("/task", taskToSave);
             onSuccess?.();
         } catch (err) {
             console.error("Error updating task:", err);
