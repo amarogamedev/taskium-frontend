@@ -6,6 +6,13 @@ export function useCreateBoard(onSuccess) {
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
 
+    const handleChange = (field, value) => {
+        setNewBoard(prev => ({
+            ...prev,
+            [field]: field === 'key' ? value.toUpperCase() : value
+        }));
+    };
+
     const handleSave = async (e) => {
         e?.preventDefault();
         setSaving(true);
@@ -27,6 +34,7 @@ export function useCreateBoard(onSuccess) {
         setNewBoard,
         saving,
         error,
+        handleChange,
         handleSave
     };
 }

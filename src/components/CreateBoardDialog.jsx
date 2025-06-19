@@ -3,14 +3,7 @@ import {FloppyDisk, Plus, SquareHalf, XCircle} from "phosphor-react";
 import {useCreateBoard} from "../hooks/useCreateBoard";
 
 export default function CreateBoardDialog({ onSuccess }) {
-    const { newBoard, setNewBoard, saving, error, handleSave } = useCreateBoard(() => {onSuccess?.();});
-
-    const handleChange = (field, value) => {
-        setNewBoard(prev => ({
-            ...prev,
-            [field]: field === 'key' ? value.toUpperCase() : value
-        }));
-    };
+    const { newBoard, saving, error, handleChange, handleSave } = useCreateBoard(() => {onSuccess?.();});
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>

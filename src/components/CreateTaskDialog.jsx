@@ -15,14 +15,7 @@ import {useTask} from "../hooks/useTask.js";
 import { EditableInfoRow } from "./EditableInfoRow";
 
 export default function CreateTaskDialog({ onSuccess, board }) {
-    const { task, setTask, saving, error, handleCreate } = useTask( {boardId: board?.id},() => {onSuccess?.();}, board);
-
-    const handleChange = (field, value) => {
-        setTask(prev => ({
-            ...prev,
-            [field]: value
-        }));
-    };
+    const { task, saving, error, handleChange, handleCreate } = useTask( {boardId: board?.id},() => {onSuccess?.();}, board);
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>
