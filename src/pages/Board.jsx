@@ -1,4 +1,4 @@
-import {Box, Center, Flex, HStack, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, HStack, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
 import {
@@ -8,20 +8,19 @@ import {
     HourglassLow,
     ListBullets,
     PersonSimpleRun,
-    SquareHalf,
-    Trash
+    PlusCircle,
+    SquareHalf
 } from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
 import CreateTaskDialog from "../components/CreateTaskDialog.jsx";
 import TaskDetailsDialog from "../components/TaskDetailsDialog.jsx";
 import ManageBoardMembersDialog from "../components/ManageBoardMembersDialog.jsx";
 import {STATUS} from "../enums/TaskStatus.js";
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useTask } from "../hooks/useTask.js";
+import {DndProvider, useDrag, useDrop} from 'react-dnd';
+import {HTML5Backend} from 'react-dnd-html5-backend';
+import {useTask} from "../hooks/useTask.js";
 import {useEffect, useState} from "react";
 
-// Draggable Task component
 const DraggableTask = ({ task, board, onSuccess }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
         type: 'TASK',
@@ -43,7 +42,6 @@ const DraggableTask = ({ task, board, onSuccess }) => {
     );
 };
 
-// Droppable Column component
 const DroppableColumn = ({ status, children, onDrop }) => {
     const [{ isOver }, drop] = useDrop(() => ({
         accept: 'TASK',
@@ -181,6 +179,7 @@ export function Board() {
                                                 />
                                             ))}
                                         </Flex>
+                                        <CreateTaskDialog onSuccess={fetchBoardData} board={board} columnId={column.id}/>
                                     </DroppableColumn>
                                 ))}
                             </SimpleGrid>

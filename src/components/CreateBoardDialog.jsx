@@ -1,5 +1,5 @@
 import {Button, CloseButton, Dialog, Field, Input, Portal, Text} from "@chakra-ui/react";
-import {FloppyDisk, Plus, SquareHalf, XCircle} from "phosphor-react";
+import {FloppyDisk, PlusCircle, SquareHalf, XCircle} from "phosphor-react";
 import {useCreateBoard} from "../hooks/useCreateBoard";
 
 export default function CreateBoardDialog({ onSuccess }) {
@@ -9,7 +9,7 @@ export default function CreateBoardDialog({ onSuccess }) {
         <Dialog.Root closeOnInteractOutside={true}>
             <Dialog.Trigger asChild>
                 <Button bg={"accent"}>
-                    <Plus size={16}/>
+                    <PlusCircle size={16}/>
                     Create new board
                 </Button>
             </Dialog.Trigger>

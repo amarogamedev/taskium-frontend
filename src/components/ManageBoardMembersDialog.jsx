@@ -1,17 +1,17 @@
 import {
+    Box,
     Button,
     CloseButton,
     Dialog,
     Field,
+    HStack,
+    IconButton,
     Input,
     Portal,
     Text,
-    VStack,
-    HStack,
-    Box,
-    IconButton
+    VStack
 } from "@chakra-ui/react";
-import {Plus, Users, Trash, XCircle} from "phosphor-react";
+import {PlusCircle, Trash, Users} from "phosphor-react";
 import {useManageBoardMembers} from "../hooks/useManageBoardMembers";
 
 export default function ManageBoardMembersDialog({boardId, members = [], onSuccess}) {
@@ -49,7 +49,7 @@ export default function ManageBoardMembersDialog({boardId, members = [], onSucce
                             <form id="add-member-form" style={{display: 'flex', flexDirection: 'column', gap: 16}} onSubmit={handleSubmit}>
                                 <Field.Root>
                                     <Field.Label>Add new member</Field.Label>
-                                    <HStack>
+                                    <HStack w={"100%"}>
                                         <Input
                                             placeholder="User login"
                                             value={newMember}
@@ -61,7 +61,7 @@ export default function ManageBoardMembersDialog({boardId, members = [], onSucce
                                             isLoading={loading}
                                             disabled={!newMember}
                                         >
-                                            <Plus size={16}/>
+                                            <PlusCircle size={16}/>
                                             Add
                                         </Button>
                                     </HStack>
@@ -80,7 +80,8 @@ export default function ManageBoardMembersDialog({boardId, members = [], onSucce
                                                 <Text fontSize="sm" color="gray.600">@{member.login}</Text>
                                             </Box>
                                             <IconButton
-                                                variant="ghost"
+                                                variant={"outline"}
+                                                color={"accent4"}
                                                 onClick={() => handleRemoveMember(member.login)}
                                             >
                                                 <Trash size={24}/>

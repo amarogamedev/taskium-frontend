@@ -1,29 +1,36 @@
-import {
-    Button,
-    CloseButton,
-    Dialog,
-    Field,
-    Input,
-    Portal,
-    Text,
-    Textarea
-} from "@chakra-ui/react";
-import {FloppyDisk, Intersect, Plus, XCircle, User} from "phosphor-react";
+import {Button, CloseButton, Dialog, Field, Input, Portal, Text, Textarea} from "@chakra-ui/react";
+import {FloppyDisk, Intersect, PlusCircle, User, XCircle} from "phosphor-react";
 import {STATUS} from "../enums/TaskStatus.js";
 import {PRIORITY} from "../enums/TaskPriority.js";
 import {useTask} from "../hooks/useTask.js";
-import { EditableInfoRow } from "./EditableInfoRow";
+import {EditableInfoRow} from "./EditableInfoRow";
+import {useEffect} from "react";
 
-export default function CreateTaskDialog({ onSuccess, board }) {
-    const { task, saving, error, handleChange, handleCreate } = useTask( {boardId: board?.id},() => {onSuccess?.();}, board);
+export default function CreateTaskDialog({onSuccess, board, columnId}) {
+    const {task, saving, error, handleChange, handleCreate} = useTask({boardId: board?.id}, () => {
+        onSuccess?.();
+    }, board);
+
+    useEffect(() => {
+        if(columnId) {
+            handleChange("status", columnId);
+        }
+    }, []);
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>
             <Dialog.Trigger asChild>
-                <Button bg={"accent"}>
-                    <Plus size={16}/>
-                    Create new task
-                </Button>
+                {columnId ? (
+                    <Button w={"100%"} mt={2} variant="ghost" color="gray.600">
+                        <PlusCircle size={16}/>
+                        New task
+                    </Button>
+                ) : (
+                    <Button bg={"accent"}>
+                        <PlusCircle size={16}/>
+                        Create new task
+                    </Button>
+                )}
             </Dialog.Trigger>
             <Portal>
                 <Dialog.Backdrop/>
@@ -34,7 +41,8 @@ export default function CreateTaskDialog({ onSuccess, board }) {
                             <Dialog.Title>New task on {board.name}</Dialog.Title>
                         </Dialog.Header>
                         <Dialog.Body>
-                            <form id="create-task-form" style={{display: 'flex', flexDirection: 'column', gap: 16}} onSubmit={handleCreate}>
+                            <form id="create-task-form" style={{display: 'flex', flexDirection: 'column', gap: 16}}
+                                  onSubmit={handleCreate}>
                                 <Field.Root>
                                     <Field.Label>
                                         Title
