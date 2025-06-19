@@ -1,4 +1,4 @@
-import {Box, Center, Flex, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
+import {Box, Center, Flex, HStack, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
 import {
@@ -14,6 +14,7 @@ import {
 import Sidebar from "../components/Sidebar.jsx";
 import CreateTaskDialog from "../components/CreateTaskDialog.jsx";
 import TaskDetailsDialog from "../components/TaskDetailsDialog.jsx";
+import ManageBoardMembersDialog from "../components/ManageBoardMembersDialog.jsx";
 import {STATUS} from "../enums/TaskStatus.js";
 
 export function Board() {
@@ -70,7 +71,10 @@ export function Board() {
                                         Total task count: {board?.taskCount}
                                     </Text>
                                 </Box>
-                                <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
+                                <HStack spacing={2}>
+                                    <ManageBoardMembersDialog boardId={boardId} members={board?.members} onSuccess={fetchBoardData}/>
+                                    <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
+                                </HStack>
                             </Flex>
                         </Box>
 

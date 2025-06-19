@@ -11,12 +11,12 @@ function Sidebar() {
     const handleLogout = async () => {
         try {
             await api.post("/auth/logout");
-            localStorage.removeItem('userInfo');
-            localStorage.removeItem('token');
-            navigate('/login');
         } catch (error) {
             console.error("Erro ao fazer logout:", error);
         }
+        localStorage.removeItem('userInfo');
+        localStorage.removeItem('token');
+        navigate('/login');
     };
 
     return (

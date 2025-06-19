@@ -14,7 +14,10 @@ export function useBoard(boardId) {
                 api.get(`/board/${boardId}`),
                 api.get(`/task/board/${boardId}`)
             ]);
-            setBoard(boardResponse.data);
+            setBoard({
+                ...boardResponse.data,
+                members: boardResponse.data.members || []
+            });
             setTasks(tasksResponse.data);
             setError(null);
         } catch (err) {
@@ -28,7 +31,7 @@ export function useBoard(boardId) {
         if (boardId) {
             fetchBoardData();
         }
-    }, []);
+    }, [boardId]);
 
     return { board, tasks, loading, error, fetchBoardData };
 }
