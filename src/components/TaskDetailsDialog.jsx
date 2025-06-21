@@ -9,6 +9,7 @@ import {
     CaretUp,
     FloppyDisk,
     Intersect,
+    PlusCircle,
     Trash,
     User,
     Warning
@@ -18,6 +19,7 @@ import {PRIORITY} from "../enums/TaskPriority";
 import {useTask} from "../hooks/useTask.js";
 import {EditableInfoRow} from "./EditableInfoRow";
 import InfoRow from "./InfoRow.jsx";
+import CreateTaskDialog from "./CreateTaskDialog.jsx";
 
 const getPriorityColor = (priority) => {
     switch (priority?.toUpperCase()) {
@@ -144,6 +146,70 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                     minH="200px"
                                                     required
                                                 />
+                                            </Box>
+
+                                            <Box mt={6}>
+                                                <Text fontWeight="medium" color="gray.600" mb={3}>
+                                                    Subtasks
+                                                </Text>
+                                                {task.subtasks?.length > 0 ? (
+                                                    <Flex direction={"column"} gap={2}>
+                                                        {task.subtasks.map(subtask => (
+                                                            <Flex key={subtask.id} borderRadius="md" p={2} gap={2} bg={"white"} border={"#e4e4e7 1px solid"}>
+                                                                <Flex gap={3} align="center" mb={1}>
+                                                                    <Flex gap={2} align="center">
+                                                                        {getPriorityIcon(subtask.priority)}
+                                                                        <Text color={getPriorityColor(subtask.priority)} fontSize="sm">
+                                                                            {board?.key}-{subtask.id}
+                                                                        </Text>
+                                                                    </Flex>
+                                                                    {subtask.title}
+                                                                </Flex>
+                                                                <Flex gap={3} align="center" mb={1}>
+                                                                    {subtask.dueDate && (
+                                                                        <Flex align="center" gap={1} mt={1} justify="flex-end">
+                                                                            <Calendar size={12} color="#52525b" />
+                                                                            <Text fontSize="xs" color="gray.600">
+                                                                                {formatDate(subtask.dueDate)}
+                                                                            </Text>
+                                                                        </Flex>
+                                                                    )}
+                                                                    {subtask.assignedUserName && (
+                                                                        <Flex align="center" gap={1}>
+                                                                            <User size={12} />
+                                                                            <Text fontSize="xs" color="gray.600">
+                                                                                {subtask.assignedUserName}
+                                                                            </Text>
+                                                                        </Flex>
+                                                                    )}
+                                                                    <Flex align="center" gap={1}>
+                                                                        <Text
+                                                                            fontSize="xs"
+                                                                            bg={subtask.status === 'DONE' ? "green.100" : "blue.100"}
+                                                                            color={subtask.status === 'DONE' ? "green.700" : "blue.700"}
+                                                                            px={2}
+                                                                            py={1}
+                                                                            borderRadius="full"
+                                                                        >
+                                                                            {STATUS.find(s => s.id === subtask.status)?.label || subtask.status}
+                                                                        </Text>
+                                                                    </Flex>
+                                                                </Flex>
+                                                            </Flex>
+                                                        ))}
+                                                    </Flex>
+                                                ) : (
+                                                    <></>
+                                                )}
+
+                                                <Box mt={3}>
+                                                    <CreateTaskDialog
+                                                        onSuccess={onSuccess}
+                                                        board={board}
+                                                        columnId={task.status}
+                                                        parentTask={task}
+                                                    />
+                                                </Box>
                                             </Box>
                                         </GridItem>
 
