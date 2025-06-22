@@ -6,7 +6,7 @@ import {useTask} from "../hooks/useTask.js";
 import {EditableInfoRow} from "./EditableInfoRow";
 import {useEffect} from "react";
 
-export default function CreateTaskDialog({onSuccess, board, columnId, parentTask}) {
+export default function CreateTaskDialog({onSuccess, board, columnId}) {
     const {task, saving, error, handleChange, handleCreate} = useTask({boardId: board?.id}, () => {
         onSuccess?.();
     }, board);
@@ -14,10 +14,6 @@ export default function CreateTaskDialog({onSuccess, board, columnId, parentTask
     useEffect(() => {
         if (columnId) {
             handleChange("status", columnId);
-        }
-
-        if (parentTask) {
-            handleChange("parentTaskId", parentTask.id);
         }
     }, []);
 
@@ -42,10 +38,7 @@ export default function CreateTaskDialog({onSuccess, board, columnId, parentTask
                     <Dialog.Header>
                         <Intersect size={28} color={"#FF5700"}/>
                         <Dialog.Title>
-                            {parentTask
-                                ? `New subtask for ${board.key}-${parentTask.id}`
-                                : `New task on ${board.name}`
-                            }
+                            New task on {board.name}
                         </Dialog.Title>
                     </Dialog.Header>
                     <Dialog.Body>

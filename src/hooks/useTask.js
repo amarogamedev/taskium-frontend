@@ -34,7 +34,7 @@ export function useTask(initialTask, onSuccess, board) {
         setError("");
         try {
             await api.post("/task", task);
-            setTask({ title: "", description: "", status: "", priority: "", dueDate: null, parentTaskId: null, boardId: board?.id });
+            setTask({ title: "", description: "", status: "", priority: "", dueDate: null, boardId: board?.id });
             onSuccess?.();
         } catch (err) {
             console.error("Error creating task:", err);
