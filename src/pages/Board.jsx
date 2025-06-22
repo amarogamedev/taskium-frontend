@@ -1,14 +1,14 @@
 import {Box, Button, Center, Flex, HStack, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
 import {
     CalendarCheck,
     Checks,
     Clipboard,
+    ClipboardText,
     HourglassLow,
     ListBullets,
     PersonSimpleRun,
-    PlusCircle,
     SquareHalf
 } from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
@@ -72,6 +72,7 @@ export function Board() {
     const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId);
     const {task, setTask, handleSave } = useTask(null, fetchBoardData);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (task) {
@@ -144,6 +145,10 @@ export function Board() {
                                         </Text>
                                     </Box>
                                     <HStack spacing={2}>
+                                        <Button variant="outline" onClick={() => {navigate(`/backlog/${boardId}`);}}>
+                                            <ClipboardText size={24}/>
+                                            Backlog
+                                        </Button>
                                         {board.owner.id === userInfo.id &&
                                             <ManageBoardMembersDialog boardId={boardId} members={board?.members} onSuccess={fetchBoardData}/>
                                         }
