@@ -3,7 +3,7 @@ import axios from 'axios';
 const isLocalhost = window.location.hostname === 'localhost';
 const baseURL = isLocalhost
     ? 'http://localhost:8080'
-    : 'https://api.dominio.com'; //TODO alterar dps quando fizer o deploy
+    : 'http://localhost:8080'; //TODO alterar dps quando fizer o deploy
 
 const api = axios.create({
     baseURL,
