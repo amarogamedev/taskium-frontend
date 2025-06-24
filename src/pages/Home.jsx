@@ -88,10 +88,7 @@ export function Home() {
                     <Text>• React</Text>
                     <Text>• Chakra UI</Text>
                     <Text>• MySQL</Text>
-                    <Text>• Docker</Text>
-                    <Text>• Firebase</Text>
                     <Text>• Liquibase</Text>
-                    <Text>• i18n</Text>
                 </Stack>
                 <Text mb={4}>
                     While building this project, I learned a lot of new things, such as JWT authentication,
