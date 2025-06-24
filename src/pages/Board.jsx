@@ -69,7 +69,7 @@ const DroppableColumn = ({ status, children, onDrop }) => {
 export function Board() {
     const [pendingStatusChange, setPendingStatusChange] = useState(null);
     const {boardId} = useParams();
-    const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId);
+    const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId, false);
     const {task, setTask, handleSave } = useTask(null, fetchBoardData);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
