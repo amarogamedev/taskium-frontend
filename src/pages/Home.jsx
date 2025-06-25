@@ -91,8 +91,7 @@ export function Home() {
                     <Text>• Liquibase</Text>
                 </Stack>
                 <Text mb={4}>
-                    While building this project, I learned a lot of new things, such as JWT authentication,
-                    deploying a Java application on Firebase, and using Docker to containerize it.
+                    While building this project, I learned a lot about JWT authentication.
                     I also had the opportunity to practice technologies I’m already familiar with, such as Spring Boot,
                     React, and MySQL.
                 </Text>
