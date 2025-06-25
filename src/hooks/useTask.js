@@ -17,7 +17,7 @@ export function useTask(initialTask, onSuccess, board) {
         setSaving(true);
         setError("");
         try {
-            await api.put("/task", taskToSave);
+            await api.put("/task/" + taskToSave.id, taskToSave);
             onSuccess?.();
         } catch (err) {
             console.error("Error updating task:", err);

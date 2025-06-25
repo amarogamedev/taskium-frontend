@@ -1,16 +1,7 @@
 import {Box, Button, Center, Flex, HStack, SimpleGrid, Spinner, Text} from "@chakra-ui/react";
 import {useNavigate, useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard";
-import {
-    CalendarCheck,
-    Checks,
-    Clipboard,
-    ClipboardText,
-    HourglassLow,
-    ListBullets,
-    PersonSimpleRun,
-    SquareHalf
-} from "phosphor-react";
+import {ClipboardText, SquareHalf} from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
 import CreateTaskDialog from "../components/dialogs/CreateTaskDialog.jsx";
 import TaskDetailsDialog from "../components/dialogs/TaskDetailsDialog.jsx";
@@ -151,14 +142,12 @@ export function Board() {
                                         status={column} 
                                         onDrop={handleTaskDrop}
                                     >
-                                        <Flex alignItems="center" gap={2} px={2}>
+                                        <Flex alignItems="center" gap={2} px={2} my={4}>
                                             {getStatusIcon(column.id)}
-                                            <Box p={2} my={2}>
-                                                <Text fontWeight="bold">{column.label}</Text>
-                                                <Text fontSize="sm" color="gray.600">
-                                                    {getTasksByStatus(column.id).length} tasks
-                                                </Text>
-                                            </Box>
+                                            <Text fontWeight="bold">{column.label}</Text>
+                                            <Text fontSize="sm" color="gray.600">
+                                                {getTasksByStatus(column.id).length} tasks
+                                            </Text>
                                         </Flex>
 
                                         <Flex direction="column" gap={2}>

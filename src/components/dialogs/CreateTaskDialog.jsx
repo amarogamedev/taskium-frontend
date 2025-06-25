@@ -5,6 +5,10 @@ import {PRIORITY} from "../../enums/TaskPriority.js";
 import {useTask} from "../../hooks/useTask.js";
 import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import {useEffect} from "react";
+import {TYPE} from "../../enums/TaskType.js";
+import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
+import {getTypeIcon} from "../../utils/typeUtils.jsx";
+import {getStatusIcon} from "../../utils/statusUtils.jsx";
 
 export default function CreateTaskDialog({onSuccess, board, columnId}) {
     const {task, saving, error, handleChange, handleCreate} = useTask({boardId: board?.id}, () => {
@@ -74,6 +78,7 @@ export default function CreateTaskDialog({onSuccess, board, columnId}) {
                                 label="Status"
                                 value={task.status}
                                 onChange={value => handleChange('status', value)}
+                                icon={getStatusIcon(task.status)}
                                 type="select"
                                 options={STATUS}
                                 required
@@ -82,8 +87,18 @@ export default function CreateTaskDialog({onSuccess, board, columnId}) {
                                 label="Priority"
                                 value={task.priority}
                                 onChange={value => handleChange('priority', value)}
+                                icon={getPriorityIcon(task.priority)}
                                 type="select"
                                 options={PRIORITY}
+                                required
+                            />
+                            <EditableInfoRow
+                                label="Type"
+                                value={task.type}
+                                onChange={value => handleChange('type', value)}
+                                icon={getTypeIcon(task.type)}
+                                type="select"
+                                options={TYPE}
                                 required
                             />
                             <EditableInfoRow

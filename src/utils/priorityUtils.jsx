@@ -7,7 +7,7 @@ export const getPriorityColor = (priority) => {
         case 'HIGH':
             return "#FF5700";
         case 'MEDIUM':
-            return "#FFD100";
+            return "#FFC401";
         case 'LOW':
             return "#0000FF";
     }
@@ -16,12 +16,12 @@ export const getPriorityColor = (priority) => {
 export const getPriorityIcon = (priority) => {
     switch (priority?.toUpperCase()) {
         case 'CRITICAL':
-            return <Warning weight="bold" size={16} color={getPriorityColor(priority)}/>;
+            return <Warning size={20} color={getPriorityColor(priority)}/>;
         case 'HIGH':
-            return <CaretDoubleUp weight="bold" size={16} color={getPriorityColor(priority)}/>;
+            return <CaretDoubleUp size={20} color={getPriorityColor(priority)}/>;
         case 'MEDIUM':
-            return <CaretUp weight="bold" size={16} color={getPriorityColor(priority)}/>;
+            return <CaretUp size={20} color={getPriorityColor(priority)}/>;
         case 'LOW':
-            return <CaretDown weight="bold" size={16} color={getPriorityColor(priority)}/>;
+            return <CaretDown size={20} color={getPriorityColor(priority)}/>;
     }
 };

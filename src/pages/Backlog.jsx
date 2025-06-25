@@ -44,7 +44,7 @@ function Backlog() {
                         {tasks.map((task) => (
                             <Table.Row key={task.id}>
                                 <Table.Cell>{boardId}</Table.Cell>
-                                <Table.Cell>{task.id}</Table.Cell>
+                                <Table.Cell>{task.internalId}</Table.Cell>
                                 <Table.Cell>{task.title}</Table.Cell>
                                 <Table.Cell>{task.status}</Table.Cell>
                                 <Table.Cell>{task.priority}</Table.Cell>

@@ -8,8 +8,9 @@ const config = defineConfig({
             colors: {
                 accent: '#0000FF',
                 accent2: '#FF5700',
-                accent3: '#FFD100',
+                accent3: '#FFC401',
                 accent4: '#FF0C00',
+                accent5: '#26B916',
             }, fonts: {
                 body: "'Rubik', sans-serif",
                 heading: "'Rubik', sans-serif"

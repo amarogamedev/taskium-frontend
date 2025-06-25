@@ -21,6 +21,9 @@ import {useTask} from "../../hooks/useTask.js";
 import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import InfoRow from "../info-rows/InfoRow.jsx";
 import {getPriorityColor, getPriorityIcon} from "../../utils/priorityUtils.jsx";
+import {TYPE} from "../../enums/TaskType.js";
+import {getTypeIcon} from "../../utils/typeUtils.jsx";
+import {getStatusIcon} from "../../utils/statusUtils.jsx";
 
 const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -48,7 +51,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                     <Flex gap={2} mb={2} align="center">
                         {getPriorityIcon(initialTask.priority)}
                         <Text color="gray.600" fontSize="sm">
-                            {board?.key}-{initialTask.id}
+                            {board?.key}-{initialTask.internalId}
                         </Text>
                     </Flex>
                     <Text mb={2}>
@@ -75,10 +78,10 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
             <Dialog.Positioner>
                 <Dialog.Content maxW="5xl">
                     <Dialog.Header borderBottom="1px solid" borderColor="gray.200" mb={4}>
-                        <Flex gap={3} align="center">
-                            <Intersect size={24} color={"#0000FF"}/>
-                            <Text fontSize="2xl">
-                                {board?.key}-{initialTask.id}
+                        <Flex gap={3} align="center" mb={1}>
+                            {getTypeIcon(initialTask.type)}
+                            <Text fontSize="xl">
+                                {board?.key}-{initialTask.internalId}
                             </Text>
                         </Flex>
                         <Dialog.CloseTrigger asChild>
@@ -134,6 +137,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                     label="Status"
                                                     value={task.status}
                                                     onChange={value => handleChange('status', value)}
+                                                    icon={getStatusIcon(task.status)}
                                                     type="select"
                                                     options={STATUS}
                                                     required
@@ -145,6 +149,15 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                     icon={getPriorityIcon(task.priority)}
                                                     type="select"
                                                     options={PRIORITY}
+                                                    required
+                                                />
+                                                <EditableInfoRow
+                                                    label="Type"
+                                                    value={task.type}
+                                                    onChange={value => handleChange('type', value)}
+                                                    icon={getTypeIcon(task.type)}
+                                                    type="select"
+                                                    options={TYPE}
                                                     required
                                                 />
                                                 <EditableInfoRow
