@@ -14,13 +14,13 @@ import {
     Text,
     Textarea
 } from "@chakra-ui/react";
-import {Calendar, CalendarCheck, FloppyDisk, Intersect, Trash, User} from "phosphor-react";
+import {Calendar, CalendarCheck, FloppyDisk, Trash, User} from "phosphor-react";
 import {STATUS} from "../../enums/TaskStatus.js";
 import {PRIORITY} from "../../enums/TaskPriority.js";
 import {useTask} from "../../hooks/useTask.js";
 import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import InfoRow from "../info-rows/InfoRow.jsx";
-import {getPriorityColor, getPriorityIcon} from "../../utils/priorityUtils.jsx";
+import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
 import {TYPE} from "../../enums/TaskType.js";
 import {getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
@@ -49,7 +49,10 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
             >
                 <Card.Body p={4}>
                     <Flex gap={2} mb={2} align="center">
-                        {getPriorityIcon(initialTask.priority)}
+                        <Flex gap={1}>
+                            {getTypeIcon(initialTask.type)}
+                            {getPriorityIcon(initialTask.priority)}
+                        </Flex>
                         <Text color="gray.600" fontSize="sm">
                             {board?.key}-{initialTask.internalId}
                         </Text>
