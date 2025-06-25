@@ -1,41 +1,26 @@
 import {
-    Box, Button, Card, CloseButton, Dialog, Field, Flex, Grid, GridItem, Input, Portal, Spinner, Text, Textarea
+    Box,
+    Button,
+    Card,
+    CloseButton,
+    Dialog,
+    Field,
+    Flex,
+    Grid,
+    GridItem,
+    Input,
+    Portal,
+    Spinner,
+    Text,
+    Textarea
 } from "@chakra-ui/react";
-import {
-    Calendar, CalendarCheck, CaretDoubleUp, CaretDown, CaretUp, FloppyDisk, Intersect, Trash, User, Warning
-} from "phosphor-react";
-import {STATUS} from "../enums/TaskStatus";
-import {PRIORITY} from "../enums/TaskPriority";
-import {useTask} from "../hooks/useTask.js";
-import {EditableInfoRow} from "./EditableInfoRow";
-import InfoRow from "./InfoRow.jsx";
-import CreateTaskDialog from "./CreateTaskDialog.jsx";
-
-const getPriorityColor = (priority) => {
-    switch (priority?.toUpperCase()) {
-        case 'CRITICAL':
-            return "#FF0C00";
-        case 'HIGH':
-            return "#FF5700";
-        case 'MEDIUM':
-            return "#FFD100";
-        case 'LOW':
-            return "#0000FF";
-    }
-};
-
-const getPriorityIcon = (priority) => {
-    switch (priority?.toUpperCase()) {
-        case 'CRITICAL':
-            return <Warning size={16} color={getPriorityColor(priority)}/>;
-        case 'HIGH':
-            return <CaretDoubleUp size={16} color={getPriorityColor(priority)}/>;
-        case 'MEDIUM':
-            return <CaretUp size={16} color={getPriorityColor(priority)}/>;
-        case 'LOW':
-            return <CaretDown size={16} color={getPriorityColor(priority)}/>;
-    }
-};
+import {Calendar, CalendarCheck, FloppyDisk, Intersect, Trash, User} from "phosphor-react";
+import {STATUS} from "../../enums/TaskStatus.js";
+import {PRIORITY} from "../../enums/TaskPriority.js";
+import {useTask} from "../../hooks/useTask.js";
+import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
+import InfoRow from "../info-rows/InfoRow.jsx";
+import {getPriorityColor, getPriorityIcon} from "../../utils/priorityUtils.jsx";
 
 const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -62,7 +47,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                 <Card.Body p={4}>
                     <Flex gap={2} mb={2} align="center">
                         {getPriorityIcon(initialTask.priority)}
-                        <Text color={getPriorityColor(initialTask.priority)} fontSize="sm">
+                        <Text color="gray.600" fontSize="sm">
                             {board?.key}-{initialTask.id}
                         </Text>
                     </Flex>

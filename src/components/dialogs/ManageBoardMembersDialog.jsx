@@ -12,7 +12,7 @@ import {
     VStack
 } from "@chakra-ui/react";
 import {PlusCircle, Trash, Users} from "phosphor-react";
-import {useManageBoardMembers} from "../hooks/useManageBoardMembers";
+import {useBoard} from "../../hooks/useBoard.js";
 
 export default function ManageBoardMembersDialog({boardId, members = [], onSuccess}) {
     const {
@@ -22,7 +22,7 @@ export default function ManageBoardMembersDialog({boardId, members = [], onSucce
         loading,
         handleAddMember,
         handleRemoveMember
-    } = useManageBoardMembers(boardId, onSuccess);
+    } = useBoard(boardId, false, onSuccess);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

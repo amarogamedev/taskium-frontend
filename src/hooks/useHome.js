@@ -6,10 +6,10 @@ export function useHome() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchBoards();
+        fetchData();
     }, []);
 
-    const fetchBoards = () => {
+    const fetchData = () => {
         setLoading(true);
         api.get("/board/all")
             .then(res => setBoards(res.data))
@@ -19,6 +19,6 @@ export function useHome() {
     return {
         boards,
         loading,
-        fetchBoards
+        fetchData
     };
 }

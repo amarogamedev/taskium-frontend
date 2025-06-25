@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import api from './api';
 
-export function useBoard(boardId, backlog) {
+export function useBoard(boardId, backlog, onSuccess) {
     const [board, setBoard] = useState(null);
+    const [newBoard, setNewBoard] = useState({ key: "", name: "" });
+    const [newMember, setNewMember] = useState('');
     const [tasks, setTasks] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -44,6 +46,56 @@ export function useBoard(boardId, backlog) {
         }
     };
 
+    const handleChange = (field, value) => {
+        setNewBoard(prev => ({
+            ...prev,
+            [field]: field === 'key' ? value.toUpperCase() : value
+        }));
+    };
+
+    const handleSave = async (e) => {
+        e?.preventDefault();
+        setLoading(true);
+        setError("");
+        try {
+            await api.post("/board", newBoard);
+            setNewBoard({ key: "", name: "" });
+            onSuccess?.();
+        } catch (err) {
+            console.error("Error creating board:", err);
+            setError(err.response?.data?.message || "Error creating board");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleAddMember = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            await api.post(`/board/${boardId}/members/${newMember}`);
+            setNewMember('');
+            onSuccess?.();
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to add member');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRemoveMember = async (userLogin) => {
+        try {
+            setLoading(true);
+            setError(null);
+            await api.delete(`/board/${boardId}/members/${userLogin}`);
+            onSuccess?.();
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to remove member');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         if (boardId) {
             if(backlog) {
@@ -55,5 +107,20 @@ export function useBoard(boardId, backlog) {
         }
     }, [boardId]);
 
-    return { board, tasks, loading, error, fetchBoardData, fetchBacklogData };
+    return {
+        loading,
+        error,
+        fetchBoardData,
+        fetchBacklogData,
+        tasks,
+        newMember,
+        setNewMember,
+        handleAddMember,
+        handleRemoveMember,
+        board,
+        newBoard,
+        setNewBoard,
+        handleChange,
+        handleSave
+    };
 }

@@ -3,12 +3,12 @@ import {useHome} from "../hooks/useHome";
 import Sidebar from "../components/Sidebar";
 import {Calendar, GithubLogo, Intersect, LinkedinLogo, SquareHalf, Users} from "phosphor-react";
 import {useNavigate} from "react-router-dom";
-import CreateBoardDialog from "../components/CreateBoardDialog.jsx";
-import InfoRow from "../components/InfoRow.jsx";
+import CreateBoardDialog from "../components/dialogs/CreateBoardDialog.jsx";
+import InfoRow from "../components/info-rows/InfoRow.jsx";
 
 
 export function Home() {
-    const {boards, loading, fetchBoards} = useHome();
+    const {boards, loading, fetchData} = useHome();
     const navigate = useNavigate();
 
     if (loading) {
@@ -25,7 +25,7 @@ export function Home() {
                     <Text fontSize="2xl" h={16}>
                         My boards
                     </Text>
-                    <CreateBoardDialog onSuccess={fetchBoards} />
+                    <CreateBoardDialog onSuccess={fetchData} />
                 </Flex>
                 {loading ? (
                     <Center h="200px"><Spinner size="lg"/></Center>
@@ -54,11 +54,6 @@ export function Home() {
                                                     label="Members"
                                                     value={board.members.length + 1}
                                                     icon={<Users size={24} color={"#52525b"}/>}
-                                                />
-                                                <InfoRow
-                                                    label="Tasks"
-                                                    value={board.taskCount}
-                                                    icon={<Intersect size={24} color={"#52525b"}/>}
                                                 />
                                             </Card.Body>
                                         </Card.Root>

@@ -1,9 +1,9 @@
 import {Button, CloseButton, Dialog, Field, Input, Portal, Text, Textarea} from "@chakra-ui/react";
 import {FloppyDisk, Intersect, PlusCircle, User, XCircle} from "phosphor-react";
-import {STATUS} from "../enums/TaskStatus.js";
-import {PRIORITY} from "../enums/TaskPriority.js";
-import {useTask} from "../hooks/useTask.js";
-import {EditableInfoRow} from "./EditableInfoRow";
+import {STATUS} from "../../enums/TaskStatus.js";
+import {PRIORITY} from "../../enums/TaskPriority.js";
+import {useTask} from "../../hooks/useTask.js";
+import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import {useEffect} from "react";
 
 export default function CreateTaskDialog({onSuccess, board, columnId}) {

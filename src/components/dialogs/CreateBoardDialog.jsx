@@ -1,9 +1,9 @@
 import {Button, CloseButton, Dialog, Field, Input, Portal, Text} from "@chakra-ui/react";
 import {FloppyDisk, PlusCircle, SquareHalf, XCircle} from "phosphor-react";
-import {useCreateBoard} from "../hooks/useCreateBoard";
+import {useBoard} from "../../hooks/useBoard.js";
 
 export default function CreateBoardDialog({ onSuccess }) {
-    const { newBoard, saving, error, handleChange, handleSave } = useCreateBoard(() => {onSuccess?.();});
+    const { newBoard, loading, error, handleChange, handleSave } = useBoard(null,false,() => {onSuccess?.();});
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>
@@ -63,7 +63,7 @@ export default function CreateBoardDialog({ onSuccess }) {
                                     type="submit"
                                     bg={"accent"}
                                     form="create-board-form"
-                                    isLoading={saving}
+                                    isLoading={loading}
                                     disabled={!newBoard.key || !newBoard.name}
                                 >
                                     <FloppyDisk/>

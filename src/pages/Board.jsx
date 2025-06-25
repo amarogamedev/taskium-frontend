@@ -12,14 +12,15 @@ import {
     SquareHalf
 } from "phosphor-react";
 import Sidebar from "../components/Sidebar.jsx";
-import CreateTaskDialog from "../components/CreateTaskDialog.jsx";
-import TaskDetailsDialog from "../components/TaskDetailsDialog.jsx";
-import ManageBoardMembersDialog from "../components/ManageBoardMembersDialog.jsx";
+import CreateTaskDialog from "../components/dialogs/CreateTaskDialog.jsx";
+import TaskDetailsDialog from "../components/dialogs/TaskDetailsDialog.jsx";
+import ManageBoardMembersDialog from "../components/dialogs/ManageBoardMembersDialog.jsx";
 import {STATUS} from "../enums/TaskStatus.js";
 import {DndProvider, useDrag, useDrop} from 'react-dnd';
 import {HTML5Backend} from 'react-dnd-html5-backend';
 import {useTask} from "../hooks/useTask.js";
 import {useEffect, useState} from "react";
+import {getStatusIcon} from "../utils/statusUtils.jsx";
 
 const DraggableTask = ({ task, board, onSuccess }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
@@ -112,17 +113,6 @@ export function Board() {
         return tasks.filter(task => task.status === status);
     };
 
-    const getIconByStatus = (status) => {
-        switch (status) {
-            case 'TO_DO': return <Clipboard size={32}/>
-            case 'IN_PROGRESS': return <PersonSimpleRun size={32}/>
-            case 'WAITING': return <HourglassLow size={32}/>
-            case 'REVIEW': return <Checks size={32}/>
-            case 'DONE': return <CalendarCheck size={32}/>
-            default: return <ListBullets size={32}/>
-        }
-    }
-
     return (
         <DndProvider backend={HTML5Backend}>
             <Flex minH="100vh" bg="gray.100">
@@ -140,9 +130,6 @@ export function Board() {
                                                 {board?.name}
                                             </Text>
                                         </Flex>
-                                        <Text color="gray.600" fontSize="sm">
-                                            Total task count: {board?.taskCount}
-                                        </Text>
                                     </Box>
                                     <HStack spacing={2}>
                                         <Button variant="outline" onClick={() => {navigate(`/backlog/${boardId}`);}}>
@@ -165,7 +152,7 @@ export function Board() {
                                         onDrop={handleTaskDrop}
                                     >
                                         <Flex alignItems="center" gap={2} px={2}>
-                                            {getIconByStatus(column.id)}
+                                            {getStatusIcon(column.id)}
                                             <Box p={2} my={2}>
                                                 <Text fontWeight="bold">{column.label}</Text>
                                                 <Text fontSize="sm" color="gray.600">
