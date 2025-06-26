@@ -89,7 +89,7 @@ export default function ManageBoardMembersDialog({boardKey, members = [], onSucc
                                         </HStack>
                                     ))}
                                     {members.length === 0 && (
-                                        <Text color="gray.500" textAlign="center">No members yet</Text>
+                                        <Text color="gray.600" textAlign="center">No members yet</Text>
                                     )}
                                 </VStack>
                             </Box>

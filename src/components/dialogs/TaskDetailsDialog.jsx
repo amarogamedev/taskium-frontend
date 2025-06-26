@@ -18,6 +18,7 @@ import {Calendar, CalendarCheck, FloppyDisk, Trash, User} from "phosphor-react";
 import {STATUS} from "../../enums/TaskStatus.js";
 import {PRIORITY} from "../../enums/TaskPriority.js";
 import {useTask} from "../../hooks/useTask.js";
+import {useComment} from "../../hooks/useComment.js";
 import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import InfoRow from "../info-rows/InfoRow.jsx";
 import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
@@ -34,6 +35,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
     const {task, saving, error, handleChange, handleSave, handleDelete} = useTask(initialTask, () => {
         onSuccess?.();
     });
+    const { comments, loading: loadingComments, error: commentError } = useComment(task?.id);
 
     const handleSubmit = async (e) => {
         e?.preventDefault();
@@ -124,6 +126,32 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                                 minH="200px"
                                                 required
                                             />
+                                        </Box>
+
+                                        <Box mt={8}>
+                                            <Text fontWeight="medium" color="gray.600" mb={2}>
+                                                Comments
+                                            </Text>
+                                            {loadingComments ? (
+                                                <Flex py={4} justify="center"><Spinner size="sm"/></Flex>
+                                            ) : commentError ? (
+                                                <Text color="accent4">{commentError}</Text>
+                                            ) : comments.length === 0 ? (
+                                                <Text color="gray.400">No comments yet.</Text>
+                                            ) : (
+                                                <Box display="flex" flexDirection="column" gap={4}>
+                                                    {comments.map(comment => (
+                                                        <Box key={comment.id} bg="gray.50" p={3} borderRadius="md">
+                                                            <Flex align="center" gap={2} mb={1}>
+                                                                <User size={16} color="#52525b"/>
+                                                                <Text>{comment.authorName}</Text>
+                                                                <Text color="gray.600" fontSize="xs">{new Date(comment.creationDateTime).toLocaleString()}</Text>
+                                                            </Flex>
+                                                            <Text whiteSpace="pre-wrap" color="gray.600">{comment.text}</Text>
+                                                        </Box>
+                                                    ))}
+                                                </Box>
+                                            )}
                                         </Box>
                                     </GridItem>
 
