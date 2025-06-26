@@ -14,27 +14,7 @@ export function useBoard(boardKey, backlog, onSuccess) {
             setLoading(true);
             const [boardResponse, tasksResponse] = await Promise.all([
                 api.get(`/board/${boardKey}`),
-                api.get(`/task/board/${boardKey}`)
-            ]);
-            setBoard({
-                ...boardResponse.data,
-                members: boardResponse.data.members || []
-            });
-            setTasks(tasksResponse.data);
-            setError(null);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const fetchBacklogData = async () => {
-        try {
-            setLoading(true);
-            const [boardResponse, tasksResponse] = await Promise.all([
-                api.get(`/board/${boardKey}`),
-                api.get(`/task/board/${boardKey}/all`)
+                api.get(backlog ? `/task/board/${boardKey}/all` : `/task/board/${boardKey}`)
             ]);
             setBoard(boardResponse.data);
             setTasks(tasksResponse.data);
@@ -98,12 +78,7 @@ export function useBoard(boardKey, backlog, onSuccess) {
 
     useEffect(() => {
         if (boardKey) {
-            if(backlog) {
-                fetchBacklogData();
-            }
-            else {
-                fetchBoardData();
-            }
+            fetchBoardData();
         }
     }, [boardKey]);
 
@@ -111,7 +86,6 @@ export function useBoard(boardKey, backlog, onSuccess) {
         loading,
         error,
         fetchBoardData,
-        fetchBacklogData,
         tasks,
         newMember,
         setNewMember,

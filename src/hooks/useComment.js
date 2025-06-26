@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import api from "./api";
 
-export function useComment(taskId) {
+export function useComment(taskId, enabled = true) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        if (!taskId) return;
+        if (!taskId || !enabled) return;
         setLoading(true);
         setError("");
         api.get(`/comment/task/${taskId}`)
@@ -16,8 +16,7 @@ export function useComment(taskId) {
                 setError(err.response?.data?.message || "Error loading comments");
             })
             .finally(() => setLoading(false));
-    }, [taskId]);
+    }, [taskId, enabled]);
 
     return { comments, loading, error };
 }
-

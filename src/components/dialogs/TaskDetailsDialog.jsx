@@ -25,6 +25,7 @@ import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
 import {TYPE} from "../../enums/TaskType.js";
 import {getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
+import { useState } from "react";
 
 const formatDate = (dateString) => {
     if (!dateString) return '-';
@@ -35,14 +36,20 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
     const {task, saving, error, handleChange, handleSave, handleDelete} = useTask(initialTask, () => {
         onSuccess?.();
     });
-    const { comments, loading: loadingComments, error: commentError } = useComment(task?.id);
+    const [commentsEnabled, setCommentsEnabled] = useState(false);
+    const { comments, loading: loadingComments, error: commentError } = useComment(task?.id, commentsEnabled);
+
+    const handleDialogOpenChange = (open) => {
+        if (open) setCommentsEnabled(true);
+        else setTimeout(() => setCommentsEnabled(false), 300);
+    };
 
     const handleSubmit = async (e) => {
         e?.preventDefault();
         await handleSave();
     };
 
-    return (<Dialog.Root closeOnInteractOutside>
+    return (<Dialog.Root closeOnInteractOutside onOpenChange={handleDialogOpenChange}>
         <Dialog.Trigger asChild>
             <Card.Root
                 cursor="pointer"
