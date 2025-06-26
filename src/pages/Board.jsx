@@ -60,8 +60,8 @@ const DroppableColumn = ({ status, children, onDrop }) => {
 
 export function Board() {
     const [pendingStatusChange, setPendingStatusChange] = useState(null);
-    const {boardId} = useParams();
-    const {tasks, loading, error, board, fetchBoardData} = useBoard(boardId, false);
+    const {boardKey} = useParams();
+    const {tasks, loading, error, board, fetchBoardData} = useBoard(boardKey, false);
     const {task, setTask, handleSave } = useTask(null, fetchBoardData);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
@@ -123,12 +123,12 @@ export function Board() {
                                         </Flex>
                                     </Box>
                                     <HStack spacing={2}>
-                                        <Button variant="outline" onClick={() => {navigate(`/backlog/${boardId}`);}}>
+                                        <Button variant="outline" onClick={() => {navigate(`/backlog/${boardKey}`);}}>
                                             <ClipboardText size={24}/>
                                             Backlog
                                         </Button>
                                         {board.owner.id === userInfo.id &&
-                                            <ManageBoardMembersDialog boardId={boardId} members={board?.members} onSuccess={fetchBoardData}/>
+                                            <ManageBoardMembersDialog boardKey={boardKey} members={board?.members} onSuccess={fetchBoardData}/>
                                         }
                                         <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
                                     </HStack>

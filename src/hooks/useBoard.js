@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import api from './api';
 
-export function useBoard(boardId, backlog, onSuccess) {
+export function useBoard(boardKey, backlog, onSuccess) {
     const [board, setBoard] = useState(null);
     const [newBoard, setNewBoard] = useState({ key: "", name: "" });
     const [newMember, setNewMember] = useState('');
@@ -13,8 +13,8 @@ export function useBoard(boardId, backlog, onSuccess) {
         try {
             setLoading(true);
             const [boardResponse, tasksResponse] = await Promise.all([
-                api.get(`/board/${boardId}`),
-                api.get(`/task/board/${boardId}`)
+                api.get(`/board/${boardKey}`),
+                api.get(`/task/board/${boardKey}`)
             ]);
             setBoard({
                 ...boardResponse.data,
@@ -33,8 +33,8 @@ export function useBoard(boardId, backlog, onSuccess) {
         try {
             setLoading(true);
             const [boardResponse, tasksResponse] = await Promise.all([
-                api.get(`/board/${boardId}`),
-                api.get(`/task/board/${boardId}/all`)
+                api.get(`/board/${boardKey}`),
+                api.get(`/task/board/${boardKey}/all`)
             ]);
             setBoard(boardResponse.data);
             setTasks(tasksResponse.data);
@@ -73,7 +73,7 @@ export function useBoard(boardId, backlog, onSuccess) {
         try {
             setLoading(true);
             setError(null);
-            await api.post(`/board/${boardId}/members/${newMember}`);
+            await api.post(`/board/${boardKey}/members/${newMember}`);
             setNewMember('');
             onSuccess?.();
         } catch (err) {
@@ -87,7 +87,7 @@ export function useBoard(boardId, backlog, onSuccess) {
         try {
             setLoading(true);
             setError(null);
-            await api.delete(`/board/${boardId}/members/${userLogin}`);
+            await api.delete(`/board/${boardKey}/members/${userLogin}`);
             onSuccess?.();
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to remove member');
@@ -97,7 +97,7 @@ export function useBoard(boardId, backlog, onSuccess) {
     };
 
     useEffect(() => {
-        if (boardId) {
+        if (boardKey) {
             if(backlog) {
                 fetchBacklogData();
             }
@@ -105,7 +105,7 @@ export function useBoard(boardId, backlog, onSuccess) {
                 fetchBoardData();
             }
         }
-    }, [boardId]);
+    }, [boardKey]);
 
     return {
         loading,

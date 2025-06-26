@@ -14,7 +14,7 @@ import {
 import {PlusCircle, Trash, Users} from "phosphor-react";
 import {useBoard} from "../../hooks/useBoard.js";
 
-export default function ManageBoardMembersDialog({boardId, members = [], onSuccess}) {
+export default function ManageBoardMembersDialog({boardKey, members = [], onSuccess}) {
     const {
         newMember,
         setNewMember,
@@ -22,7 +22,7 @@ export default function ManageBoardMembersDialog({boardId, members = [], onSucce
         loading,
         handleAddMember,
         handleRemoveMember
-    } = useBoard(boardId, false, onSuccess);
+    } = useBoard(boardKey, false, onSuccess);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

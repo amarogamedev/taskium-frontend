@@ -4,8 +4,8 @@ import {useParams} from "react-router-dom";
 import {useBoard} from "../hooks/useBoard.js";
 
 function Backlog() {
-    const {boardId} = useParams();
-    const {tasks, loading, error, board} = useBoard(boardId, true);
+    const {boardKey} = useParams();
+    const {tasks, loading, error, board} = useBoard(boardKey, true);
 
     if (loading) {
         return (
@@ -28,7 +28,7 @@ function Backlog() {
                 <Table.Root border="1px solid #e4e4e7">
                     <Table.Header>
                         <Table.Row>
-                            <Table.ColumnHeader>Board ID</Table.ColumnHeader>
+                            <Table.ColumnHeader>Board key</Table.ColumnHeader>
                             <Table.ColumnHeader>Task ID</Table.ColumnHeader>
                             <Table.ColumnHeader>Title</Table.ColumnHeader>
                             <Table.ColumnHeader>Status</Table.ColumnHeader>
@@ -43,7 +43,7 @@ function Backlog() {
                     <Table.Body>
                         {tasks.map((task) => (
                             <Table.Row key={task.id}>
-                                <Table.Cell>{boardId}</Table.Cell>
+                                <Table.Cell>{boardKey}</Table.Cell>
                                 <Table.Cell>{task.internalId}</Table.Cell>
                                 <Table.Cell>{task.title}</Table.Cell>
                                 <Table.Cell>{task.status}</Table.Cell>

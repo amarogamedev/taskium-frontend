@@ -35,8 +35,8 @@ function App() {
                         <Route path="/login" element={<Login/>}/>
                         <Route path="/" element={<Home/>}/>
                         <Route path="/settings" element={<Settings/>}/>
-                        <Route path="/board/:boardId" element={<Board/>}/>
-                        <Route path="/backlog/:boardId" element={<Backlog/>}/>
+                        <Route path="/board/:boardKey" element={<Board/>}/>
+                        <Route path="/backlog/:boardKey" element={<Backlog/>}/>
                         <Route path="*" element={<NotFound/>}/>
                     </>
                 ) : (

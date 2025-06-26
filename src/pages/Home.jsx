@@ -37,7 +37,7 @@ export function Home() {
                             <Box border={"1px solid #e4e4e7"} borderRadius={8} bg="gray.200" p={2}>
                                 <Grid gridTemplateColumns="repeat(2, 1fr)" gap={2}>
                                     {boards?.map(board => (
-                                        <Card.Root key={board.id} cursor="pointer" onClick={() => navigate(`/board/${board.id}`)}>
+                                        <Card.Root key={board.id} cursor="pointer" onClick={() => navigate(`/board/${board.key}`)}>
                                             <Card.Header>
                                                 <Flex gap={2}>
                                                     <SquareHalf size={24} color={"#FF5700"}/>
