@@ -3,11 +3,9 @@ import {CaretDoubleUp, CaretDown, CaretUp, Warning} from "phosphor-react";
 export const getPriorityColor = (priority) => {
     switch (priority?.toUpperCase()) {
         case 'CRITICAL':
-            return "#FF0C00";
         case 'HIGH':
             return "#FF5700";
         case 'MEDIUM':
-            return "#FFC401";
         case 'LOW':
             return "#0000FF";
     }

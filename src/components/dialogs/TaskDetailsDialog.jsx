@@ -7,14 +7,14 @@ import {
     Field,
     Flex,
     Grid,
-    GridItem,
+    GridItem, IconButton,
     Input,
     Portal,
     Spinner,
     Text,
     Textarea
 } from "@chakra-ui/react";
-import {Calendar, CalendarCheck, FloppyDisk, Trash, User} from "phosphor-react";
+import {ArrowRight, Calendar, CalendarCheck, FloppyDisk, PaperPlaneRight, Trash, User} from "phosphor-react";
 import {STATUS} from "../../enums/TaskStatus.js";
 import {PRIORITY} from "../../enums/TaskPriority.js";
 import {useTask} from "../../hooks/useTask.js";
@@ -37,7 +37,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
         onSuccess?.();
     });
     const [commentsEnabled, setCommentsEnabled] = useState(false);
-    const { comments, loading: loadingComments, error: commentError } = useComment(task?.id, commentsEnabled);
+    const { comments, loading: loadingComments, error: commentError, addComment, newCommentText, setNewCommentText } = useComment(task?.id, commentsEnabled);
 
     const handleDialogOpenChange = (open) => {
         if (open) setCommentsEnabled(true);
@@ -139,12 +139,25 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                             <Text fontWeight="medium" color="gray.600" mb={2}>
                                                 Comments
                                             </Text>
+                                            <Flex mb={4} align="center" gap={2}>
+                                                <Textarea
+                                                    value={newCommentText}
+                                                    onChange={e => setNewCommentText(e.target.value)}
+                                                    whiteSpace="pre-wrap"
+                                                    bg="gray.50"
+                                                    p={4}
+                                                    borderRadius="md"
+                                                    placeholder="Add a comment..."
+                                                    minH="64px"
+                                                />
+                                                <IconButton variant="ghost" onClick={() => addComment()}>
+                                                    <PaperPlaneRight size={16}/>
+                                                </IconButton>
+                                            </Flex>
                                             {loadingComments ? (
                                                 <Flex py={4} justify="center"><Spinner size="sm"/></Flex>
                                             ) : commentError ? (
                                                 <Text color="accent4">{commentError}</Text>
-                                            ) : comments.length === 0 ? (
-                                                <Text color="gray.400">No comments yet.</Text>
                                             ) : (
                                                 <Box display="flex" flexDirection="column" gap={4}>
                                                     {comments.map(comment => (

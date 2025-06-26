@@ -5,6 +5,7 @@ export function useComment(taskId, enabled = true) {
     const [comments, setComments] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [newCommentText, setNewCommentText] = useState("");
 
     useEffect(() => {
         if (!taskId || !enabled) return;
@@ -18,5 +19,19 @@ export function useComment(taskId, enabled = true) {
             .finally(() => setLoading(false));
     }, [taskId, enabled]);
 
-    return { comments, loading, error };
+    const addComment = async () => {
+        setLoading(true);
+        setError("");
+        api.post(`/comment`, {text: newCommentText, taskId: taskId})
+            .then(res => setComments(prev => [...prev, res.data]))
+            .catch(err => {
+                setError(err.response?.data?.message || "Error loading comments");
+            })
+            .finally(() => {
+                setNewCommentText("")
+                setLoading(false);
+            });
+    }
+
+    return { comments, loading, error, addComment, newCommentText, setNewCommentText};
 }
