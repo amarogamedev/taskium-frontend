@@ -33,5 +33,18 @@ export function useComment(taskId, enabled = true) {
             });
     }
 
-    return { comments, loading, error, addComment, newCommentText, setNewCommentText};
+    const deleteComment = async (commentId) => {
+        setLoading(true);
+        setError("");
+        api.delete(`/comment/${commentId}`)
+            .then(() => {
+                setComments(prev => prev.filter(comment => comment.id !== commentId));
+            })
+            .catch(err => {
+                setError(err.response?.data?.message || "Error deleting comment");
+            })
+            .finally(() => setLoading(false));
+    }
+
+    return { comments, loading, error, addComment, deleteComment, newCommentText, setNewCommentText};
 }

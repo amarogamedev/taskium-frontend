@@ -37,7 +37,7 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
         onSuccess?.();
     });
     const [commentsEnabled, setCommentsEnabled] = useState(false);
-    const { comments, loading: loadingComments, error: commentError, addComment, newCommentText, setNewCommentText } = useComment(task?.id, commentsEnabled);
+    const { comments, loading: loadingComments, error: commentError, addComment, deleteComment, newCommentText, setNewCommentText } = useComment(task?.id, commentsEnabled);
 
     const handleDialogOpenChange = (open) => {
         if (open) setCommentsEnabled(true);
@@ -161,14 +161,23 @@ export default function TaskDetailsDialog({task: initialTask, board, onSuccess})
                                             ) : (
                                                 <Box display="flex" flexDirection="column" gap={4}>
                                                     {comments.map(comment => (
-                                                        <Box key={comment.id} bg="gray.50" p={3} borderRadius="md">
-                                                            <Flex align="center" gap={2} mb={1}>
-                                                                <User size={16} color="#52525b"/>
-                                                                <Text>{comment.authorName}</Text>
-                                                                <Text color="gray.600" fontSize="xs">{new Date(comment.creationDateTime).toLocaleString()}</Text>
-                                                            </Flex>
-                                                            <Text whiteSpace="pre-wrap" color="gray.600">{comment.text}</Text>
-                                                        </Box>
+                                                        <Flex key={comment.id} justify="center" gap={2}>
+                                                            <Box w="100%" bg="gray.50" p={3} borderRadius="md">
+                                                                <Flex align="center" gap={2} mb={1}>
+                                                                    <User size={16} color="#52525b"/>
+                                                                    <Text>{comment.authorName}</Text>
+                                                                    <Text color="gray.600" fontSize="xs">{new Date(comment.creationDateTime).toLocaleString()}</Text>
+                                                                </Flex>
+                                                                <Text color="gray.600" wordBreak="break-word">{comment.text}</Text>
+                                                            </Box>
+                                                            <IconButton
+                                                                variant={"ghost"}
+                                                                color={"accent4"}
+                                                                onClick={() => deleteComment(comment.id)}
+                                                            >
+                                                                <Trash size={24}/>
+                                                            </IconButton>
+                                                        </Flex>
                                                     ))}
                                                 </Box>
                                             )}
