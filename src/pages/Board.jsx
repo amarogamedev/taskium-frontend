@@ -26,9 +26,10 @@ const DraggableTask = ({ task, board, onSuccess }) => {
         <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
             <TaskDetailsDialog
                 key={task.id}
-                task={task}
+                initialTask={task}
                 board={board}
                 onSuccess={onSuccess}
+                isDialog={false}
             />
         </div>
     );
@@ -62,7 +63,7 @@ export function Board() {
     const [pendingStatusChange, setPendingStatusChange] = useState(null);
     const {boardKey} = useParams();
     const {tasks, loading, error, board, fetchBoardData} = useBoard(boardKey, false);
-    const {task, setTask, handleSave } = useTask(null, fetchBoardData);
+    const {task, setTask, handleSave } = useTask(null, false, fetchBoardData, board);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const navigate = useNavigate();
 

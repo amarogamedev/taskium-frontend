@@ -1,10 +1,35 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import api from "./api";
 
-export function useTask(initialTask, onSuccess, board) {
+export function useTask(initialTask, enabled, onSuccess, board) {
     const [task, setTask] = useState(initialTask);
+    const [subtasks, setSubtasks] = useState([]);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        if (!task || !enabled) return;
+        fetchSubtasks();
+    }, [task, enabled]);
+
+    const fetchSubtasks = async () => {
+        setSaving(true);
+        setError("");
+        try {
+            await api.get("/task/" + task.id + "/subtasks").then(res => {
+                if(res.data != null && res.data.length > 0) {
+                    setSubtasks(res.data)
+                }
+            });
+        } catch (err) {
+            console.error("Error fetching subtasks:", err);
+            setError(err.response?.data?.message || "Error fetching subtasks");
+            throw err;
+        } finally {
+            setSaving(false);
+        }
+    };
+
 
     const handleChange = (field, value) => {
         setTask(prev => ({
@@ -61,6 +86,7 @@ export function useTask(initialTask, onSuccess, board) {
 
     return {
         task,
+        subtasks,
         setTask,
         saving,
         error,

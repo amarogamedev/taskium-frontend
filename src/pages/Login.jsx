@@ -34,7 +34,7 @@ function Login() {
 
     return (
         <Flex minH="100vh" bg="gray.100">
-            <Card.Root maxW="md" maxH={"700px"} mx="auto" mt={16}>
+            <Card.Root w="md" maxH={"700px"} mx="auto" mt={16}>
                 <Card.Header>
                     <Image src="logo.png" mb={6}/>
                     <Card.Title>{isSignUp ? 'Sign Up' : 'Login'}</Card.Title>

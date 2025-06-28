@@ -1,33 +1,28 @@
-import {Button, CloseButton, Dialog, Field, Input, Portal, Text, Textarea} from "@chakra-ui/react";
+import {Button, CloseButton, Dialog, Field, Input, Text, Textarea} from "@chakra-ui/react";
 import {FloppyDisk, Intersect, PlusCircle, User, XCircle} from "phosphor-react";
 import {STATUS} from "../../enums/TaskStatus.js";
 import {PRIORITY} from "../../enums/TaskPriority.js";
 import {useTask} from "../../hooks/useTask.js";
 import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
-import {useEffect} from "react";
 import {TYPE} from "../../enums/TaskType.js";
 import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
 import {getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
 
-export default function CreateTaskDialog({onSuccess, board, columnId}) {
-    const {task, saving, error, handleChange, handleCreate} = useTask({boardId: board?.id}, () => {
+export default function CreateTaskDialog({onSuccess, board, columnId, parentTaskId}) {
+    const {task, saving, error, handleChange, handleCreate} = useTask({
+        boardId: board?.id, parentTaskId: parentTaskId, status: columnId
+    }, false, () => {
         onSuccess?.();
     }, board);
-
-    useEffect(() => {
-        if (columnId) {
-            handleChange("status", columnId);
-        }
-    }, []);
 
     return (
         <Dialog.Root closeOnInteractOutside={true}>
             <Dialog.Trigger asChild>
-                {columnId ? (
-                    <Button w={"100%"} mt={2} variant="ghost" color="gray.600">
+                {columnId || parentTaskId ? (
+                    <Button w={"100%"} my={2} variant="ghost" color="gray.600">
                         <PlusCircle size={16}/>
-                        New task
+                        {parentTaskId ? "Create new subtask" : "New task"}
                     </Button>
                 ) : (
                     <Button bg={"accent"}>
@@ -63,11 +58,9 @@ export default function CreateTaskDialog({onSuccess, board, columnId}) {
                             <Field.Root>
                                 <Field.Label>
                                     Description
-                                    <Text as="span" color="accent2"> *</Text>
                                 </Field.Label>
                                 <Textarea
                                     placeholder="Describe the task in detail"
-                                    required
                                     value={task.description}
                                     onChange={e => handleChange('description', e.target.value)}
                                     minHeight="150px"
@@ -136,7 +129,7 @@ export default function CreateTaskDialog({onSuccess, board, columnId}) {
                                 bg={"accent"}
                                 form="create-task-form"
                                 isLoading={saving}
-                                disabled={!task.title || !task.description || !task.status || !task.priority}
+                                disabled={!task.title || !task.status || !task.priority || !task.type}
                             >
                                 <FloppyDisk/>
                                 Save
