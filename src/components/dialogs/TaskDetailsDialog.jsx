@@ -35,7 +35,6 @@ import {TYPE} from "../../enums/TaskType.js";
 import {getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
 import {useState} from "react";
-import CreateTaskDialog from "./CreateTaskDialog.jsx";
 
 const formatDate = (dateString) => {
     if (!dateString) return '-';
