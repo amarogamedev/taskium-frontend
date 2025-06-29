@@ -9,9 +9,9 @@ import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
 import {getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
 
-export default function CreateTaskDialog({onSuccess, board, columnId, parentTaskId}) {
+export default function CreateTaskDialog({onSuccess, board, columnId}) {
     const {task, saving, error, handleChange, handleCreate} = useTask({
-        boardId: board?.id, parentTaskId: parentTaskId, status: columnId
+        boardId: board?.id, status: columnId
     }, false, () => {
         onSuccess?.();
     }, board);
@@ -19,10 +19,10 @@ export default function CreateTaskDialog({onSuccess, board, columnId, parentTask
     return (
         <Dialog.Root closeOnInteractOutside={true}>
             <Dialog.Trigger asChild>
-                {columnId || parentTaskId ? (
+                {columnId ? (
                     <Button w={"100%"} my={2} variant="ghost" color="gray.600">
                         <PlusCircle size={16}/>
-                        {parentTaskId ? "Create new subtask" : "New task"}
+                        New task
                     </Button>
                 ) : (
                     <Button bg={"accent"}>

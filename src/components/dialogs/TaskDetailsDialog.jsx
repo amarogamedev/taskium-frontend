@@ -7,20 +7,20 @@ import {
     Field,
     Flex,
     Grid,
-    GridItem, IconButton,
+    GridItem,
+    IconButton,
     Input,
-    Portal,
     Spinner,
     Text,
     Textarea
 } from "@chakra-ui/react";
 import {
-    ArrowRight,
     Calendar,
     CalendarCheck,
     CaretRight,
     FloppyDisk,
     PaperPlaneRight,
+    PlusCircle,
     Trash,
     User
 } from "phosphor-react";
@@ -51,7 +51,8 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
         error,
         handleChange,
         handleSave,
-        handleDelete
+        handleDelete,
+        handleCreateSubtask
     } = useTask(initialTask, taskOpen, () => {
         onSuccess?.();
     }, board);
@@ -82,6 +83,7 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                 cursor="pointer"
                 _hover={{transform: 'scale(1.02)'}}
                 transition="transform 0.2s"
+                mb={2}
             >
                 <Card.Body p={4}>
                     <Flex gap={2} mb={2} align="center">
@@ -165,7 +167,6 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                                             p={4}
                                             borderRadius="md"
                                             minH="200px"
-                                            required
                                         />
                                     </Box>
 
@@ -173,15 +174,16 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                                         <Text fontWeight="medium" color="gray.600" mb={2}>
                                             Subtasks
                                         </Text>
-                                        <Dialog.CloseTrigger asChild>
-                                            <CreateTaskDialog board={board} parentTaskId={task.id}/>
-                                        </Dialog.CloseTrigger>
+                                        <Button w={"100%"} my={2} variant="ghost" color="gray.600" onClick={handleCreateSubtask}>
+                                            <PlusCircle size={16}/>
+                                            Create new subtask
+                                        </Button>
                                         {subtasks.map(subtask => (
                                             <TaskDetailsDialog
-                                                initialTask={subtask}
-                                                board={board}
-                                                onSuccess={onSuccess}
-                                                isDialog={true}
+                                            initialTask={subtask}
+                                            board={board}
+                                            onSuccess={onSuccess}
+                                            isDialog={true}
                                             />
                                         ))}
                                     </Box>
