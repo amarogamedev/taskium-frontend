@@ -339,7 +339,7 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                                 </Dialog.Header>
                                 <Dialog.Body>
                                     <p>
-                                        This action cannot be undone. This will permanently delete this task.
+                                        This action cannot be undone. This will permanently delete this task and its subtasks!.
                                     </p>
                                 </Dialog.Body>
                                 <Dialog.Footer>
