@@ -60,7 +60,7 @@ function Backlog() {
                 <Table.Root border="1px solid #e4e4e7">
                     <Table.Header>
                         <Table.Row>
-                            <Table.ColumnHeader>Task ID</Table.ColumnHeader>
+                            <Table.ColumnHeader>ID</Table.ColumnHeader>
                             <Table.ColumnHeader>Title</Table.ColumnHeader>
                             <Table.ColumnHeader>Type</Table.ColumnHeader>
                             <Table.ColumnHeader>Status</Table.ColumnHeader>
