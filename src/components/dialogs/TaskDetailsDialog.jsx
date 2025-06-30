@@ -32,7 +32,7 @@ import {EditableInfoRow} from "../info-rows/EditableInfoRow.jsx";
 import InfoRow from "../info-rows/InfoRow.jsx";
 import {getPriorityIcon} from "../../utils/priorityUtils.jsx";
 import {TYPE} from "../../enums/TaskType.js";
-import {getTypeIcon} from "../../utils/typeUtils.jsx";
+import {getTypeColor, getTypeIcon} from "../../utils/typeUtils.jsx";
 import {getStatusIcon} from "../../utils/statusUtils.jsx";
 import {useState} from "react";
 
@@ -84,7 +84,7 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                 transition="transform 0.2s"
                 mb={2}
             >
-                <Card.Body p={4}>
+                <Card.Body p={4} borderTop="2px solid" borderColor={getTypeColor(initialTask.type)} borderRadius="md">
                     <Flex gap={2} mb={2} align="center">
                         <Flex gap={1}>
                             {getTypeIcon(initialTask.type)}

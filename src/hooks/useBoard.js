@@ -12,12 +12,12 @@ export function useBoard(boardKey, backlog, onSuccess) {
     const fetchBoardData = async () => {
         try {
             setLoading(true);
-            const [boardResponse, tasksResponse] = await Promise.all([
-                api.get(`/board/${boardKey}`),
-                api.get(backlog ? `/task/board/${boardKey}/all` : `/task/board/${boardKey}`)
-            ]);
-            setBoard(boardResponse.data);
-            setTasks(tasksResponse.data);
+            if(backlog){
+                await doFetchBacklog();
+            }
+            else {
+                await doFetchBoard();
+            }
             setError(null);
         } catch (err) {
             setError(err.message);
@@ -25,6 +25,24 @@ export function useBoard(boardKey, backlog, onSuccess) {
             setLoading(false);
         }
     };
+
+    async function doFetchBoard() {
+        const [boardResponse, tasksResponse] = await Promise.all([
+            api.get(`/board/${boardKey}`),
+            api.get(`/task/board/${boardKey}`)
+        ]);
+        setBoard(boardResponse.data);
+        setTasks(tasksResponse.data);
+    }
+
+    async function doFetchBacklog() {
+        const [boardResponse, tasksResponse] = await Promise.all([
+            api.get(`/board/${boardKey}`),
+            api.get(`/task/board/${boardKey}/all`)
+        ]);
+        setBoard(boardResponse.data);
+        setTasks(tasksResponse.data);
+    }
 
     const handleChange = (field, value) => {
         setNewBoard(prev => ({

@@ -3,6 +3,7 @@ import {BookBookmark, BugBeetle, Intersect} from "phosphor-react";
 export const getTypeColor = (type) => {
     switch (type?.toUpperCase()) {
         case 'STORY':
+            return "#29B000"
         case 'TASK':
             return "#0000FF";
         case 'BUG':

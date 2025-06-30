@@ -6,8 +6,9 @@ export const getPriorityColor = (priority) => {
         case 'HIGH':
             return "#FF5700";
         case 'MEDIUM':
+            return "#0000FF"
         case 'LOW':
-            return "#0000FF";
+            return "#29B000";
     }
 };
 
