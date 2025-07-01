@@ -9,14 +9,15 @@ import {getTypeIcon} from "../utils/typeUtils.jsx";
 import {getStatusIcon} from "../utils/statusUtils.jsx";
 import {getPriorityIcon} from "../utils/priorityUtils.jsx";
 import {ClipboardText, SquareHalf} from "phosphor-react";
+import TaskDetailsDialog from "../components/dialogs/TaskDetailsDialog.jsx";
 
 function Backlog() {
     const navigate = useNavigate();
     const {boardKey} = useParams();
-    const {tasks, loading, error, board} = useBoard(boardKey, true);
+    const {tasks, loading, error, board, fetchBoardData} = useBoard(boardKey, true);
 
     const formatDate = (dateString) => {
-        if (!dateString) return '-';
+        if (!dateString) return '';
         return new Date(dateString).toLocaleDateString();
     };
 
@@ -70,6 +71,7 @@ function Backlog() {
                             <Table.ColumnHeader>Creation date</Table.ColumnHeader>
                             <Table.ColumnHeader>Due date</Table.ColumnHeader>
                             <Table.ColumnHeader>Completed date</Table.ColumnHeader>
+                            <Table.ColumnHeader>Edit</Table.ColumnHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -100,6 +102,15 @@ function Backlog() {
                                 <Table.Cell>{formatDate(task.creationDate)}</Table.Cell>
                                 <Table.Cell>{formatDate(task.dueDate)}</Table.Cell>
                                 <Table.Cell>{formatDate(task.completedDate)}</Table.Cell>
+                                <Table.Cell>
+                                    <TaskDetailsDialog
+                                        key={task.id}
+                                        initialTask={task}
+                                        board={board}
+                                        onSuccess={fetchBoardData}
+                                        isButton={true}
+                                    />
+                                </Table.Cell>
                             </Table.Row>
                         ))}
                     </Table.Body>

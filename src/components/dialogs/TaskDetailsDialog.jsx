@@ -19,7 +19,7 @@ import {
     CalendarCheck,
     CaretRight,
     FloppyDisk,
-    PaperPlaneRight,
+    PaperPlaneRight, Pencil,
     PlusCircle,
     Trash,
     User
@@ -37,11 +37,11 @@ import {getStatusIcon} from "../../utils/statusUtils.jsx";
 import {useState} from "react";
 
 const formatDate = (dateString) => {
-    if (!dateString) return '-';
+    if (!dateString) return '';
     return new Date(dateString).toLocaleDateString();
 };
 
-export default function TaskDetailsDialog({initialTask, board, onSuccess, isDialog}) {
+export default function TaskDetailsDialog({initialTask, board, onSuccess, isDialog, isButton}) {
     const [taskOpen, setTaskOpen] = useState(false);
     const {
         task,
@@ -78,7 +78,7 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
 
     return (<Dialog.Root closeOnInteractOutside onOpenChange={handleDialogOpenChange}>
         <Dialog.Trigger asChild>
-            <Card.Root
+            {isButton ? (<IconButton variant={"outline"}><Pencil size={16}/></IconButton>) : (<Card.Root
                 cursor="pointer"
                 _hover={{transform: 'scale(1.02)'}}
                 transition="transform 0.2s"
@@ -114,7 +114,7 @@ export default function TaskDetailsDialog({initialTask, board, onSuccess, isDial
                         </Text>
                     </Flex>}
                 </Card.Body>
-            </Card.Root>
+            </Card.Root>)}
         </Dialog.Trigger>
 
         <Dialog.Backdrop/>
