@@ -48,6 +48,24 @@ export function useAuth() {
         setLoading(false);
     };
 
+    const handleUpdate = async (updateData) => {
+        setLoading(true);
+        setError('');
+        try {
+            await api.put('/auth/update', updateData).then(response => {
+                const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+                const updatedUserInfo = { ...userInfo, name: updateData.name };
+                localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
+                return response.data;
+            });
+        } catch (error) {
+            setError(getResponseError(error, 'Erro ao atualizar dados'));
+            throw error;
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleAuthSuccess = (userInfo) => {
         localStorage.setItem('userInfo', JSON.stringify(userInfo));
         navigate('/');
@@ -92,6 +110,7 @@ export function useAuth() {
         isSignUp,
         handleLogin,
         handleSignUp,
-        toggleSignUp
+        toggleSignUp,
+        handleUpdate
     };
 }

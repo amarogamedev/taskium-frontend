@@ -1,7 +1,7 @@
 import {Box, Button, Card, Center, Flex, Grid, Spinner, Stack, Text} from "@chakra-ui/react";
 import {useHome} from "../hooks/useHome";
 import Sidebar from "../components/Sidebar";
-import {Calendar, GithubLogo, Intersect, LinkedinLogo, SquareHalf, Users} from "phosphor-react";
+import {Calendar, GearSix, GithubLogo, House, Intersect, LinkedinLogo, SquareHalf, Users} from "phosphor-react";
 import {useNavigate} from "react-router-dom";
 import CreateBoardDialog from "../components/dialogs/CreateBoardDialog.jsx";
 import InfoRow from "../components/info-rows/InfoRow.jsx";
@@ -22,9 +22,14 @@ export function Home() {
             <Sidebar/>
             <Box flex={1} p={6} pl="306px">
                 <Flex justifyContent="space-between" mb={8} h={8}>
-                    <Text fontSize="2xl" h={16}>
-                        My boards
-                    </Text>
+                    <Box h={16}>
+                        <Flex alignItems="center" gap={3} mb={1}>
+                            <House size={24} weight={"fill"} color={"#FF5700"}/>
+                            <Text fontSize="2xl">
+                                My boards
+                            </Text>
+                        </Flex>
+                    </Box>
                     <CreateBoardDialog onSuccess={fetchData} />
                 </Flex>
                 {loading ? (

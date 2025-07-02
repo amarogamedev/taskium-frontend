@@ -112,29 +112,27 @@ export function Board() {
                 <Box flex={1} pl="280px">
                     <Box p={6}>
                         <Flex direction="column" h="100vh">
-                            <Box mb={4}>
-                                <Flex justifyContent="space-between" mb={8} h={8}>
-                                    <Box h={16}>
-                                        <Flex alignItems="center" gap={3} mb={1}>
-                                            <SquareHalf size={24} color={"#FF5700"}/>
-                                            <Text color="accent2" fontSize="2xl" fontWeight="black">{board?.key}</Text>
-                                            <Text fontSize="2xl">
-                                                {board?.name}
-                                            </Text>
-                                        </Flex>
-                                    </Box>
-                                    <HStack spacing={2}>
-                                        <Button variant="outline" onClick={() => {navigate(`/backlog/${boardKey}`);}}>
-                                            <ClipboardText size={24}/>
-                                            Backlog
-                                        </Button>
-                                        {board.owner.id === userInfo.id &&
-                                            <ManageBoardMembersDialog boardKey={boardKey} members={board?.members} onSuccess={fetchBoardData}/>
-                                        }
-                                        <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
-                                    </HStack>
-                                </Flex>
-                            </Box>
+                            <Flex justifyContent="space-between" mb={8} h={8}>
+                                <Box h={16}>
+                                    <Flex alignItems="center" gap={3} mb={1}>
+                                        <SquareHalf size={24} color={"#FF5700"}/>
+                                        <Text color="accent2" fontSize="2xl" fontWeight="black">{board?.key}</Text>
+                                        <Text fontSize="2xl">
+                                            {board?.name}
+                                        </Text>
+                                    </Flex>
+                                </Box>
+                                <HStack spacing={2}>
+                                    <Button variant="outline" onClick={() => {navigate(`/backlog/${boardKey}`);}}>
+                                        <ClipboardText size={24}/>
+                                        Backlog
+                                    </Button>
+                                    {board.owner.id === userInfo.id &&
+                                        <ManageBoardMembersDialog boardKey={boardKey} members={board?.members} onSuccess={fetchBoardData}/>
+                                    }
+                                    <CreateTaskDialog onSuccess={fetchBoardData} board={board}/>
+                                </HStack>
+                            </Flex>
 
                             <SimpleGrid columns={STATUS.length} spacing={4} flex={1} overflowX="auto">
                                 {STATUS.map((column) => (
